@@ -6,3 +6,9 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <filesystem>
+#include <string>
+#include <vector>
+#include <array>
+//#include <pair>
+#include <map>
