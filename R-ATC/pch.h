@@ -8,7 +8,6 @@
 #define PCH_H
 
 // プリコンパイルするヘッダーをここに追加します
-#include <windows.h>
 #include "framework.h"
 #include "ats.h"
 
