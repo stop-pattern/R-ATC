@@ -27,7 +27,7 @@ DE void SC Dispose(void) {
 }
 
 DE int SC GetPluginVersion(void) {
-
+	return PI_VERSION;
 }
 
 DE void SC SetVehicleSpec(Spec) {
@@ -39,7 +39,7 @@ DE void SC Initialize(int) {
 }
 
 DE Hand SC Elapse(State, int*, int*) {
-
+	return {};
 }
 
 DE void SC SetPower(int) {
