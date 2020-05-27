@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "System.h"
 
-using std::string;
-using namespace std::filesystem;
 
 
 /* ----- functions ----- */
