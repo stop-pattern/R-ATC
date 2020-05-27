@@ -1,7 +1,7 @@
 #pragma once
 class System {
 private:
-	/** ----- numbers ----- */
+	/* ----- numbers ----- */
 	// System::status のインデックス
 	enum struct statusIndex : int {
 		getPath,
@@ -9,13 +9,13 @@ private:
 		size
 	};
 
-	/** ----- variants ----- */
+	/* ----- variants ----- */
 	std::array<int, static_cast<size_t>(statusIndex::size)> status;	// 関数の実行結果
 	std::filesystem::path dllPath;	// このdllへの絶対パス
 	std::filesystem::path iniPath;	// このdllと同階層同名のiniへの絶対パス
 	std::map<std::string, std::map<std::string, int>> iniData;	// iniから読み出した値
 
-	/** ----- functions ----- */
+	/* ----- functions ----- */
 	// get dll path (with ini path)
 	// arg : HMODULE hModule
 	//     ->dllMain
@@ -40,7 +40,7 @@ private:
 	int readIni(std::string app, std::string key, uint32_t def = 0);
 
 public:
-	/** ----- functions ----- */
+	/* ----- functions ----- */
 	// constructor
 	System();
 	

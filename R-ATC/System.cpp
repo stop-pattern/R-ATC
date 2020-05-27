@@ -5,6 +5,8 @@ using std::string;
 using namespace std::filesystem;
 
 
+/* ----- functions ----- */
+
 int System::getPath(HMODULE hModule) {
 	LPSTR FilePath;	// = _T("");
 	char buf[100];
