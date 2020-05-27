@@ -46,7 +46,7 @@ int System::readIni(std::string app, std::string key, uint32_t def) {
 	int ret = 0;
 	try {
 		//GetPrivateProfileIntA("AppName", "KeyName", default, "FileName");
-		ret = GetPrivateProfileInt(app.c_str(), key.c_str(), 0, "");	// path : this->iniPath.c_str()
+		ret = GetPrivateProfileInt(app.c_str(), key.c_str(), 0, this->iniPath.string().c_str());
 		this->iniData[app][key] = ret;
 	}
 	catch (const std::exception& e) {
