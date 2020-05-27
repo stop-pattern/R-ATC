@@ -20,14 +20,7 @@ int System::getPath(HMODULE hModule) {
 	this->dllPath = FilePath;
 	
 	this->iniPath = this->dllPath;
-	this->iniPath.replace_extension("ini");
-
-	/*
-	string drive, dir, fname, ext;
-	this->dllPath = string(FilePath);
-	//_splitpath(&fpath, &drive, &dir, &fname, &ext);//パス名を構成要素に分解
-	this->iniPath = drive + dir + fname + ".ini";
-	*/
+	this->iniPath.replace_extension(".ini");
 
 	return 0;
 }
@@ -57,7 +50,9 @@ int System::readIni(std::string app, std::string key, uint32_t def) {
 
 int System::Attach(HMODULE hModule) {
 	this->status[static_cast<size_t>(statusIndex::getPath)] = this->getPath(hModule);
-	this->status[static_cast<size_t>(statusIndex::iniLoad)] = this->iniLoad();
+	if (this->dllPath.is_absolute()) {
+		this->status[static_cast<size_t>(statusIndex::iniLoad)] = this->iniLoad();
+	}
 
 	int ret = 0;
 	for (size_t i = 0; i < static_cast<size_t>(statusIndex::size); i++) {
