@@ -4,6 +4,7 @@ struct SpecPlus : Spec {
 	int E = 0;	// 非常ブレーキ
 	SpecPlus& operator=(const Spec& next);
 	SpecPlus& operator=(const SpecPlus& next);
+	SpecPlus();
 };
 
 struct StatePlus : State {
@@ -20,17 +21,12 @@ struct StatePlus : State {
 	float fps = 0;	// フレーム数[frame/s]
 	StatePlus& operator=(const State& next);
 	StatePlus& operator=(const StatePlus& next);
+	StatePlus();
 };
 
 struct VehicleState {
-	SpecPlus spec;	// 車両性能
-	StatePlus status_now;	// 車両状態 (今フレーム)
-	StatePlus status_previous;	// 車両状態 (前フレーム)
-	std::array<uint32_t, 256> panel;	// panel制御値
-	std::array<int32_t, 256> sound;	// sound制御値
-	Hand handle_manual;	// 手動ハンドル状態
-	Hand handle_control;	// ハンドル制御値 (前フレーム出力)
-	std::array<bool, 16> key;	// 入力キー状態
-	bool door;	// ドア状態
-	int32_t signal;	// signal値
+	StatePlus status = StatePlus();	// 車両状態
+	std::array<uint32_t, 256> panel = {};	// panel制御値
+	std::array<int32_t, 256> sound = {};	// sound制御値
+	VehicleState();
 };
