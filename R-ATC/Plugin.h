@@ -43,15 +43,7 @@ public:
 	//     whether inside function is succeeded (if success, 0)
 	//     if failed, bit flag (return |= 1 << statusIndex)
 	int Attach(HMODULE hModule);
-	
-	// get value from ini file
-	// arg : std::string app
-	//     ini [app] name
-	// arg : std::string key
-	//     ini key name
-	// return : int
-	//     whether app && key are found (if not found, -1)
-	int getiniData(std::string app, std::string key);
+
 
 	// --- for bve API --- //
 
@@ -138,6 +130,7 @@ public:
 	//     signal index
 	void SetSignal(int s);
 
+
 	// --- API for developer --- //
 
 	// get vehicle status
@@ -187,6 +180,16 @@ public:
 	// return : int32_t
 	//     signal index
 	int32_t getSignal(void);
+
+	// get value from ini file
+	// arg : std::string app
+	//     ini [app] name
+	// arg : std::string key
+	//     ini key name
+	// return : int
+	//     whether app && key are found (if not found, -1)
+	int getiniData(std::string app, std::string key);
+
 
 private:
 	// --- others --- //

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Plugin.h"
 
-Plugin* atsPlugin = new Plugin();
+Plugin* atsPlugin = new Plugin();	// 現在状態保存
 
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
@@ -51,7 +51,7 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 
 	/* ----- todo: add optional code here ----- */
 	// example:
-	if (atsPlugin->getDoor) {
+	if (atsPlugin->getDoor()) {
 		ret.P = 0;
 	}
 

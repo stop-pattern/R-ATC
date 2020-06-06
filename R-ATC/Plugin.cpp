@@ -45,12 +45,6 @@ int Plugin::Attach(HMODULE hModule) {
 	return ret;
 }
 
-int Plugin::getiniData(std::string app, std::string key) {
-	if (this->iniData.count(app) && this->iniData.count(key)) {	// 存在判定
-		return this->iniData[app][key];
-	}
-	return -1;	// 指定した値がないとき
-}
 
 // --- for bve API --- //
 
@@ -109,6 +103,7 @@ void Plugin::SetSignal(int s) {
 	this->signal = s;
 }
 
+
 // --- API for developer --- //
 
 VehicleState Plugin::getStatus(void) {
@@ -140,6 +135,13 @@ bool Plugin::getDoor(void) {
 
 int32_t Plugin::getSignal(void) {
 	return this->signal;
+}
+
+int Plugin::getiniData(std::string app, std::string key) {
+	if (this->iniData.count(app) && this->iniData.count(key)) {	// 存在判定
+		return this->iniData[app][key];
+	}
+	return -1;	// 指定した値がないとき
 }
 
 
