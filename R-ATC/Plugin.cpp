@@ -62,11 +62,7 @@ void Plugin::Initialize(int i) {
 
 Hand Plugin::Elapse(State st, int* p, int* s) {
 	this->status_previous = this->status_now;
-	this->status_now.status = st;
-	for (size_t i = 0; i < 256; i++) {
-		this->status_now.panel[i] = p[i];
-		this->status_now.sound[i] = s[i];
-	}
+	this->status_now = VehicleState(st, p, s);
 	return this->handle_manual;
 }
 

@@ -92,3 +92,11 @@ VehicleState::VehicleState() {
 	std::array<uint32_t, 256> panel = {};	// panelêßå‰íl
 	std::array<int32_t, 256> sound = {};	// soundêßå‰íl
 }
+
+VehicleState::VehicleState(State st, int* p, int* s) {
+	this->status = st;
+	for (size_t i = 0; i < 256; i++) {
+		this->panel[i] = p[i];
+		this->sound[i] = s[i];
+	}
+}

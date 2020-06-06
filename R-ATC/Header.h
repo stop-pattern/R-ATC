@@ -29,4 +29,5 @@ struct VehicleState {
 	std::array<uint32_t, 256> panel = {};	// panelêßå‰íl
 	std::array<int32_t, 256> sound = {};	// soundêßå‰íl
 	VehicleState();
+	VehicleState(State st, int* p, int* s);
 };
