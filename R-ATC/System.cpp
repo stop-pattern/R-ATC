@@ -42,11 +42,11 @@ void System::SetPower(int p)
 {
 }
 
-void System::SetBrake(int p)
+void System::SetBrake(int b)
 {
 }
 
-void System::SetReverser(int p)
+void System::SetReverser(int r)
 {
 }
 

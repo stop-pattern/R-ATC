@@ -55,13 +55,13 @@ public:
 	// called in SetBrake(int)
 	// arg : int p
 	//     brake notch position
-	void SetBrake(int p);
+	void SetBrake(int b);
 
 	// save manual reverser position to vehicleStatus
 	// called in SetReverser(int)
 	// arg : int p
 	//     reverser position
-	void SetReverser(int p);
+	void SetReverser(int r);
 
 	// save key status to vehicleStatus
 	// called in KeyDown(int)
