@@ -1,5 +1,6 @@
 #pragma once
 
+// 車両スペック拡張
 struct SpecPlus : Spec {
 	int E = 0;	// 非常ブレーキ
 	SpecPlus& operator=(const Spec& next);
@@ -7,6 +8,7 @@ struct SpecPlus : Spec {
 	SpecPlus();
 };
 
+// 車両状態拡張
 struct StatePlus : State {
 	double dZ = 0;	// 移動距離[m]
 	float dV = 0;	//速度変化[km/h]
@@ -24,6 +26,7 @@ struct StatePlus : State {
 	StatePlus();
 };
 
+// 毎フレーム状態
 struct VehicleState {
 	StatePlus status = StatePlus();	// 車両状態
 	std::array<uint32_t, 256> panel = {};	// panel制御値

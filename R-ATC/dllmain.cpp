@@ -45,7 +45,8 @@ DE void SC Initialize(int) {
 }
 
 DE Hand SC Elapse(State st, int* p, int* s) {
-	Hand manual = atsPlugin->Elapse(st, p, s);
+	VehicleState status = VehicleState(st, s, p);
+	Hand manual = atsPlugin->Elapse(status);
 	Hand ret = manual;
 
 	/* ----- todo: add optional code here ----- */

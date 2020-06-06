@@ -60,10 +60,14 @@ void Plugin::Initialize(int i) {
 	this->initPos = i;
 }
 
-Hand Plugin::Elapse(State st, int* p, int* s) {
+Hand Plugin::Elapse(VehicleState st) {
 	this->status_previous = this->status_now;
-	this->status_now = VehicleState(st, p, s);
+	this->status_now = st;
 	return this->handle_manual;
+}
+
+Hand Plugin::Elapse(State st, int* p, int* s) {
+	return this->Elapse(VehicleState(st, p, s));
 }
 
 Hand Plugin::Elapse(Hand h) {

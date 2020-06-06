@@ -64,6 +64,14 @@ public:
 
 	// save status in latest frame
 	// called in Elapse(State, int*, int*)
+	// arg : VehicleState st 
+	//     vehicle status
+	// return : Hand
+	//     latest manually set handle position
+	Hand Elapse(VehicleState st);
+
+	// save status in latest frame
+	// called in Elapse(State, int*, int*)
 	// arg : State st 
 	//     vehicle status
 	// arg : int* p
