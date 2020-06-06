@@ -53,7 +53,7 @@ int Plugin::getiniData(std::string app, std::string key) {
 }
 
 void Plugin::SetVehicleSpec(Spec sp) {
-	sp = this->spec;
+	this->spec = sp;
 }
 
 void Plugin::Initialize(int i) {
@@ -76,15 +76,15 @@ Hand Plugin::Elapse(Hand h) {
 }
 
 void Plugin::SetPower(int p) {
-	p = this->handle_manual.P;
+	this->handle_manual.P = p;
 }
 
 void Plugin::SetBrake(int b) {
-	b = this->handle_manual.B;
+	this->handle_manual.B = b;
 }
 
 void Plugin::SetReverser(int r) {
-	r = this->handle_manual.R;
+	this->handle_manual.R = r;
 }
 
 void Plugin::KeyDown(int k) {
