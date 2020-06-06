@@ -5,6 +5,14 @@
 
 /* ----- functions ----- */
 
+System::System()
+{
+}
+
+System::~System()
+{
+}
+
 int System::Attach(HMODULE hModule) {
 	this->status[static_cast<size_t>(statusIndex::getPath)] = this->getPath(hModule);
 	if (this->dllPath.is_absolute()) {
@@ -24,6 +32,42 @@ int System::getiniData(std::string app, std::string key) {
 		return this->iniData[app][key];
 	}
 	return -1;	// Žw’è‚µ‚½’l‚ª‚È‚¢‚Æ‚«
+}
+
+void System::SetVehicleSpec(Spec sp)
+{
+}
+
+void System::SetPower(int p)
+{
+}
+
+void System::SetBrake(int p)
+{
+}
+
+void System::SetReverser(int p)
+{
+}
+
+void System::KeyDown(int k)
+{
+}
+
+void System::KeyUp(int k)
+{
+}
+
+void System::DoorOpen(void)
+{
+}
+
+void System::DoorClose(void)
+{
+}
+
+void System::SetSignal(int s)
+{
 }
 
 int System::getPath(HMODULE hModule) {
