@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "System.h"
+#include "Plugin.h"
 
 
 
 /* ----- functions ----- */
 
-System::System() {
+Plugin::Plugin() {
 	std::array<int, static_cast<size_t>(statusIndex::size)> init_a = {};
 	this->status = init_a;
 	
@@ -33,10 +33,10 @@ System::System() {
 	this->vehicleStatus.signal = 0;
 }
 
-System::~System() {
+Plugin::~Plugin() {
 }
 
-int System::Attach(HMODULE hModule) {
+int Plugin::Attach(HMODULE hModule) {
 	this->status[static_cast<size_t>(statusIndex::getPath)] = this->getPath(hModule);
 	if (this->dllPath.is_absolute()) {
 		this->status[static_cast<size_t>(statusIndex::iniLoad)] = this->iniLoad();
@@ -50,50 +50,50 @@ int System::Attach(HMODULE hModule) {
 	return ret;
 }
 
-int System::getiniData(std::string app, std::string key) {
+int Plugin::getiniData(std::string app, std::string key) {
 	if (this->iniData.count(app) && this->iniData.count(key)) {	// ‘¶Ý”»’è
 		return this->iniData[app][key];
 	}
 	return -1;	// Žw’è‚µ‚½’l‚ª‚È‚¢‚Æ‚«
 }
 
-void System::SetVehicleSpec(Spec sp) {
+void Plugin::SetVehicleSpec(Spec sp) {
 	sp = this->vehicleStatus.spec;
 }
 
-void System::SetPower(int p) {
+void Plugin::SetPower(int p) {
 	p = this->vehicleStatus.handle_manual.P;
 }
 
-void System::SetBrake(int b) {
+void Plugin::SetBrake(int b) {
 	b = this->vehicleStatus.handle_manual.B;
 }
 
-void System::SetReverser(int r) {
+void Plugin::SetReverser(int r) {
 	r = this->vehicleStatus.handle_manual.R;
 }
 
-void System::KeyDown(int k) {
+void Plugin::KeyDown(int k) {
 	this->vehicleStatus.key[k] = true;
 }
 
-void System::KeyUp(int k) {
+void Plugin::KeyUp(int k) {
 	this->vehicleStatus.key[k] = false;
 }
 
-void System::DoorOpen(void) {
+void Plugin::DoorOpen(void) {
 	this->vehicleStatus.door = true;
 }
 
-void System::DoorClose(void) {
+void Plugin::DoorClose(void) {
 	this->vehicleStatus.door = false;
 }
 
-void System::SetSignal(int s) {
+void Plugin::SetSignal(int s) {
 	this->vehicleStatus.signal = s;
 }
 
-int System::getPath(HMODULE hModule) {
+int Plugin::getPath(HMODULE hModule) {
 	LPSTR FilePath;	// = _T("");
 	char buf[100];
 	FilePath = &buf[0];
@@ -113,7 +113,7 @@ int System::getPath(HMODULE hModule) {
 	return 0;
 }
 
-int System::iniLoad() {
+int Plugin::iniLoad() {
 	try {
 		readIni("app", "key", 0);	// Example
 	}
@@ -123,7 +123,7 @@ int System::iniLoad() {
 	return 0;
 }
 
-int System::readIni(std::string app, std::string key, uint32_t def) {
+int Plugin::readIni(std::string app, std::string key, uint32_t def) {
 	int ret = 0;
 	try {
 		//GetPrivateProfileIntA("AppName", "KeyName", default, "FileName");

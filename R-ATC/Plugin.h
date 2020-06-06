@@ -1,8 +1,8 @@
 #pragma once
-class System {
+class Plugin {
 private:
 	/* ----- numbers ----- */
-	// System::status のインデックス
+	// Plugin::status のインデックス
 	enum struct statusIndex : int {
 		getPath,
 		iniLoad,
@@ -19,10 +19,10 @@ private:
 public:
 	/* ----- functions ----- */
 	// constructor
-	System();
+	Plugin();
 	
 	// destructor
-	~System();
+	~Plugin();
 	
 	// use when dll was Attached
 	// return : int
