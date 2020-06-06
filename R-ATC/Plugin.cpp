@@ -16,21 +16,16 @@ Plugin::Plugin() {
 	std::map<std::string, std::map<std::string, int>> init_m = { {} };
 	this->iniData = init_m;
 
-	this->vehicleStatus = VehicleState();
-	this->vehicleStatus.spec = {0, 0, 0, 0, 0, 0};
-	this->vehicleStatus.status_now = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	this->vehicleStatus.status_previous = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	std::array<uint32_t, 256> init_u = {};
-	this->vehicleStatus.panel = init_u;
-	std::array<int32_t, 256> init_s = {};
-	this->vehicleStatus.sound = init_s;
+	this->spec = SpecPlus();
+	this->status_now = VehicleState();
+	this->status_previous = VehicleState();
 	Hand init_h = {};
-	this->vehicleStatus.handle_manual = init_h;
-	this->vehicleStatus.handle_control = init_h;
+	this->handle_manual = init_h;
+	this->handle_control = init_h;
 	std::array<bool, 16> init_b = {};
-	this->vehicleStatus.key = init_b;
-	this->vehicleStatus.door = false;
-	this->vehicleStatus.signal = 0;
+	this->key = init_b;
+	this->door = false;
+	this->signal = 0;
 }
 
 Plugin::~Plugin() {
@@ -58,39 +53,39 @@ int Plugin::getiniData(std::string app, std::string key) {
 }
 
 void Plugin::SetVehicleSpec(Spec sp) {
-	sp = this->vehicleStatus.spec;
+	sp = this->spec;
 }
 
 void Plugin::SetPower(int p) {
-	p = this->vehicleStatus.handle_manual.P;
+	p = this->handle_manual.P;
 }
 
 void Plugin::SetBrake(int b) {
-	b = this->vehicleStatus.handle_manual.B;
+	b = this->handle_manual.B;
 }
 
 void Plugin::SetReverser(int r) {
-	r = this->vehicleStatus.handle_manual.R;
+	r = this->handle_manual.R;
 }
 
 void Plugin::KeyDown(int k) {
-	this->vehicleStatus.key[k] = true;
+	this->key[k] = true;
 }
 
 void Plugin::KeyUp(int k) {
-	this->vehicleStatus.key[k] = false;
+	this->key[k] = false;
 }
 
 void Plugin::DoorOpen(void) {
-	this->vehicleStatus.door = true;
+	this->door = true;
 }
 
 void Plugin::DoorClose(void) {
-	this->vehicleStatus.door = false;
+	this->door = false;
 }
 
 void Plugin::SetSignal(int s) {
-	this->vehicleStatus.signal = s;
+	this->signal = s;
 }
 
 int Plugin::getPath(HMODULE hModule) {

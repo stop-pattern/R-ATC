@@ -11,10 +11,21 @@ private:
 
 	/* ----- variants ----- */
 	std::array<int, static_cast<size_t>(statusIndex::size)> status;	// 関数の実行結果
+
 	std::filesystem::path dllPath;	// このdllへの絶対パス
 	std::filesystem::path iniPath;	// このdllと同階層同名のiniへの絶対パス
 	std::map<std::string, std::map<std::string, int>> iniData;	// iniから読み出した値
-	VehicleState vehicleStatus;	// 車両状態値
+
+	int32_t initPos;	// 初期ブレーキ位置
+
+	SpecPlus spec;	// 車両性能
+	VehicleState status_now;	// 車両状態値 (今フレーム)
+	VehicleState status_previous;	// 車両状態値 (前フレーム)
+	Hand handle_manual;	// 手動ハンドル状態
+	Hand handle_control;	// ハンドル制御値 (前フレーム出力)
+	std::array<bool, 16> key;	// 入力キー状態
+	bool door;	// ドア状態
+	int32_t signal;	// signal値
 
 public:
 	/* ----- functions ----- */
