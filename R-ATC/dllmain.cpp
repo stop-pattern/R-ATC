@@ -45,7 +45,16 @@ DE void SC Initialize(int) {
 }
 
 DE Hand SC Elapse(State st, int* p, int* s) {
-	return {};
+	Hand manual = atsPlugin->Elapse(st, p, s);
+	Hand ret = manual;
+
+	/* ----- todo: add optional code here ----- */
+	// example:
+	if (st.V >= 160) {
+		ret.P = 0;
+	}
+
+	return atsPlugin->Elapse(ret);
 }
 
 DE void SC SetPower(int p) {

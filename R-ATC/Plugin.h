@@ -50,51 +50,76 @@ public:
 	//     whether app && key are found (if not found, -1)
 	int getiniData(std::string app, std::string key);
 
-	// save vehicle spec to vehicleStatus
+	// save vehicle spec
 	// called in SetVehicleSpec(Spec)
 	// arg : Spec sp
 	//     vehicle spec
 	void SetVehicleSpec(Spec sp);
 
-	// save manual handle position to vehicleStatus
+	// save latest initialize position
+	// called in Initialize(int)
+	// arg : int i
+	//     initialize position
+	void Initialize(int i);
+
+	// save status in latest frame
+	// called in Elapse(State, int*, int*)
+	// arg : State st 
+	//     vehicle status
+	// arg : int* p
+	//     panel status
+	// arg : int* s
+	//     sound status
+	// return : Hand
+	//     latest manually set handle position
+	Hand Elapse(State st, int* p, int* s);
+
+	// save handle position in latest frame
+	// called in Elapse(State, int*, int*)
+	// arg : Hand h
+	// return : Hand
+	//     latest manually set handle position
+	Hand Elapse(Hand h);
+
+	// save manual handle position
 	// called in SetPower(int)
 	// arg : int p
 	//     power notch position
 	void SetPower(int p);
 
-	// save manual handle position to vehicleStatus
+	// save manual handle position
 	// called in SetBrake(int)
 	// arg : int p
 	//     brake notch position
 	void SetBrake(int b);
 
-	// save manual reverser position to vehicleStatus
+	// save manual reverser position
 	// called in SetReverser(int)
 	// arg : int p
 	//     reverser position
 	void SetReverser(int r);
 
-	// save key status to vehicleStatus
+	// save key status
 	// called in KeyDown(int)
 	// arg : int k
 	//     key status
 	void KeyDown(int k);
 
-	// save key status to vehicleStatus
+	// save key status
 	// called in KeyUp(int)
 	// arg : int k
 	//     key status
 	void KeyUp(int k);
 
-	// save door status to vehicleStatus
+	// save door status
 	// called in DoorOpen(void)
 	void DoorOpen(void);
 
-	// save door status to vehicleStatus
+	// save door status
 	// called in DoorClose(void)
 	void DoorClose(void);
 
-	// save signal index to vehicleStatus
+	// save signal index
 	// called in SetSignal(int)
 	// arg : int s
 	//     signal index

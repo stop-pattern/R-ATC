@@ -56,6 +56,25 @@ void Plugin::SetVehicleSpec(Spec sp) {
 	sp = this->spec;
 }
 
+void Plugin::Initialize(int i) {
+	this->initPos;
+}
+
+Hand Plugin::Elapse(State st, int* p, int* s) {
+	this->status_previous = this->status_now;
+	this->status_now.status = st;
+	for (size_t i = 0; i < 256; i++) {
+		this->status_now.panel[i] = p[i];
+		this->status_now.sound[i] = s[i];
+	}
+	return this->handle_manual;
+}
+
+Hand Plugin::Elapse(Hand h) {
+	this->handle_control = h;
+	return this->handle_control;
+}
+
 void Plugin::SetPower(int p) {
 	p = this->handle_manual.P;
 }
