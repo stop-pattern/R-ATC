@@ -57,7 +57,7 @@ void Plugin::SetVehicleSpec(Spec sp) {
 }
 
 void Plugin::Initialize(int i) {
-	this->initPos;
+	this->initPos = i;
 }
 
 Hand Plugin::Elapse(State st, int* p, int* s) {
