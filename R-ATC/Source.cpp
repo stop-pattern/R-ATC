@@ -10,6 +10,15 @@ SpecPlus& SpecPlus::operator=(const SpecPlus& next) {
 	return *this;
 }
 
+SpecPlus::SpecPlus() {
+	int B = 0;	//ブレーキ段数
+	int P = 0;	//ノッチ段数
+	int A = 0;	//ATS確認段数
+	int J = 0;	//常用最大段数
+	int C = 0;	//編成車両数
+	int E = 0;	// 非常ブレーキ
+}
+
 SpecPlus& SpecPlus::operator=(const Spec& next) {
 	if (this == &next) {
 		this->E = next.B + 1;
@@ -53,4 +62,33 @@ StatePlus& StatePlus::operator=(const StatePlus& next) {
 		State::operator=(next);
 	}
 	return *this;
+}
+
+StatePlus::StatePlus() {
+	double Z = 0;	//列車位置[m]
+	float V = 0;	//列車速度[km/h]
+	int T = 0;		//0時からの経過時間[ms]
+	float BC = 0;	//BC圧力[kPa]
+	float MR = 0;	//MR圧力[kPa]
+	float ER = 0;	//ER圧力[kPa]
+	float BP = 0;	//BP圧力[kPa]
+	float SAP = 0;	//SAP圧力[kPa]
+	float I = 0;	//電流[A]
+	double dZ = 0;	// 移動距離[m]
+	float dV = 0;	//速度変化[km/h]
+	int dT = 0;	// 経過時間[ms]
+	float dBC = 0;	// BC圧力変化[kPa]
+	float dMR = 0;	// MR圧力変化[kPa]
+	float dER = 0;	// ER圧力変化[kPa]
+	float dBP = 0;	// BP圧力変化[kPa]
+	float dSAP = 0;	// SAP圧力変化[kPa]
+	float dI = 0;	// 電流変化[A]
+	float A = 0;	// 加速度[km/h/s]
+	float fps = 0;	// フレーム数[frame/s]
+}
+
+VehicleState::VehicleState() {
+	StatePlus status = StatePlus();	// 車両状態
+	std::array<uint32_t, 256> panel = {};	// panel制御値
+	std::array<int32_t, 256> sound = {};	// sound制御値
 }
