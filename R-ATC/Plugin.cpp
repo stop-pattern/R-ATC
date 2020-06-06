@@ -106,6 +106,10 @@ void Plugin::SetSignal(int s) {
 
 // --- API for developer --- //
 
+SpecPlus Plugin::getSpec(void) {
+	return this->spec;
+}
+
 VehicleState Plugin::getStatus(void) {
 	return this->status_now;;
 }

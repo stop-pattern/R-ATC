@@ -133,6 +133,12 @@ public:
 
 	// --- API for developer --- //
 
+	// get vehicle spec
+	// arg : void
+	// return : SpecPlus
+	//     vehicle spec
+	SpecPlus getSpec(void);
+
 	// get vehicle status
 	// arg : void
 	// return : VehicleState

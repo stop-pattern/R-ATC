@@ -54,6 +54,9 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	if (atsPlugin->getDoor()) {
 		ret.P = 0;
 	}
+	if (std::abs(atsPlugin->getStatus().status.A) >= 10) {
+		ret.B = atsPlugin->getSpec().E;
+	}
 
 	return atsPlugin->Elapse(ret);
 }
