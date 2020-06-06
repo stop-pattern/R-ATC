@@ -5,6 +5,27 @@
 
 /* ----- functions ----- */
 
+int System::Attach(HMODULE hModule) {
+	this->status[static_cast<size_t>(statusIndex::getPath)] = this->getPath(hModule);
+	if (this->dllPath.is_absolute()) {
+		this->status[static_cast<size_t>(statusIndex::iniLoad)] = this->iniLoad();
+	}
+
+	int ret = 0;
+	for (size_t i = 0; i < static_cast<size_t>(statusIndex::size); i++) {
+		if (this->status[i] == 0) continue;
+		ret |= 1 << i;
+	}
+	return ret;
+}
+
+int System::getiniData(std::string app, std::string key) {
+	if (this->iniData.count(app) && this->iniData.count(key)) {	// 存在判定
+		return this->iniData[app][key];
+	}
+	return -1;	// 指定した値がないとき
+}
+
 int System::getPath(HMODULE hModule) {
 	LPSTR FilePath;	// = _T("");
 	char buf[100];
@@ -18,7 +39,7 @@ int System::getPath(HMODULE hModule) {
 	}
 
 	this->dllPath = FilePath;
-	
+
 	this->iniPath = this->dllPath;
 	this->iniPath.replace_extension(".ini");
 
@@ -46,25 +67,4 @@ int System::readIni(std::string app, std::string key, uint32_t def) {
 		return -1;	// エラー握りつぶす => 後で実装する
 	}
 	return ret;
-}
-
-int System::Attach(HMODULE hModule) {
-	this->status[static_cast<size_t>(statusIndex::getPath)] = this->getPath(hModule);
-	if (this->dllPath.is_absolute()) {
-		this->status[static_cast<size_t>(statusIndex::iniLoad)] = this->iniLoad();
-	}
-
-	int ret = 0;
-	for (size_t i = 0; i < static_cast<size_t>(statusIndex::size); i++) {
-		if (this->status[i] == 0) continue;
-		ret |= 1 << i;
-	}
-	return ret;
-}
-
-int System::getiniData(std::string app, std::string key) {
-	if (this->iniData.count(app) && this->iniData.count(key)) {	// 存在判定
-		return this->iniData[app][key];
-	}
-	return -1;	// 指定した値がないとき
 }
