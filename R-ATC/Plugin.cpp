@@ -52,6 +52,8 @@ int Plugin::getiniData(std::string app, std::string key) {
 	return -1;	// Žw’è‚µ‚½’l‚ª‚È‚¢‚Æ‚«
 }
 
+// --- for bve API --- //
+
 void Plugin::SetVehicleSpec(Spec sp) {
 	this->spec = sp;
 }
@@ -106,6 +108,42 @@ void Plugin::DoorClose(void) {
 void Plugin::SetSignal(int s) {
 	this->signal = s;
 }
+
+// --- API for developer --- //
+
+VehicleState Plugin::getStatus(void) {
+	return this->status_now;;
+}
+
+VehicleState Plugin::getStatusPrevious(void) {
+	return this->status_previous;
+}
+
+Hand Plugin::getHandleControl(void) {
+	return this->handle_control;
+}
+
+Hand Plugin::getHandleManual(void) {
+	return this->handle_manual;
+}
+std::array<bool, 16> Plugin::getKey(void) {
+	return this->key;
+}
+
+bool Plugin::getKey(uint8_t i) {
+	return key[i];
+}
+
+bool Plugin::getDoor(void) {
+	return this->door;
+}
+
+int32_t Plugin::getSignal(void) {
+	return this->signal;
+}
+
+
+// --- others --- //
 
 int Plugin::getPath(HMODULE hModule) {
 	LPSTR FilePath;	// = _T("");

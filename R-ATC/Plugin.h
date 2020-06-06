@@ -29,12 +29,15 @@ private:
 
 public:
 	/* ----- functions ----- */
+
+	// --- system --- //
+
 	// constructor
 	Plugin();
 	
 	// destructor
 	~Plugin();
-	
+
 	// use when dll was Attached
 	// return : int
 	//     whether inside function is succeeded (if success, 0)
@@ -49,6 +52,8 @@ public:
 	// return : int
 	//     whether app && key are found (if not found, -1)
 	int getiniData(std::string app, std::string key);
+
+	// --- for bve API --- //
 
 	// save vehicle spec
 	// called in SetVehicleSpec(Spec)
@@ -133,7 +138,58 @@ public:
 	//     signal index
 	void SetSignal(int s);
 
+	// --- API for developer --- //
+
+	// get vehicle status
+	// arg : void
+	// return : VehicleState
+	//     vehicle status
+	VehicleState getStatus(void);
+
+	// get vehicle status
+	// arg : void
+	// return : VehicleState
+	//     vehicle status
+	VehicleState getStatusPrevious(void);
+
+	// get handle status
+	// arg : void
+	// return : Hand
+	//     handle status
+	Hand getHandleControl(void);
+
+	// get handle status
+	// arg : void
+	// return : Hand
+	//     handle status
+	Hand getHandleManual(void);
+
+	// get key status
+	// arg : void
+	// return : std::array<bool, 16>
+	//     key status
+	std::array<bool, 16> getKey(void);
+	// get key status
+	// arg : uint8_t i
+	//     key index
+	// return : bool
+	//     key status
+	bool getKey(uint8_t i);
+
+	// get door status
+	// arg : void
+	// return : bool
+	//     door status
+	bool getDoor(void);
+
+	// get signal index
+	// arg : void
+	// return : int32_t
+	//     signal index
+	int32_t getSignal(void);
+
 private:
+	// --- others --- //
 
 	// get dll path (with ini path)
 	// arg : HMODULE hModule

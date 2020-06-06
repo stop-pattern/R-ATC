@@ -51,7 +51,7 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 
 	/* ----- todo: add optional code here ----- */
 	// example:
-	if (st.V >= 160) {
+	if (atsPlugin->getDoor) {
 		ret.P = 0;
 	}
 
