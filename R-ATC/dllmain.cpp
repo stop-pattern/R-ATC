@@ -1,8 +1,10 @@
 ﻿// dllmain.cpp : DLL アプリケーションのエントリ ポイントを定義します。
 #include "pch.h"
 #include "Plugin.h"
+#include "R_ATC.h"
 
 Plugin* atsPlugin = new Plugin();	// 現在状態保存
+R_ATC* atcR = new R_ATC();	// R-ATC
 
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
@@ -57,6 +59,8 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	if (std::abs(atsPlugin->getStatus().status.A) >= 10) {
 		ret.B = atsPlugin->getSpec().E;
 	}
+	// R-ATC example:
+	atcR->Elapse(status);
 
 	return atsPlugin->Elapse(ret);
 }

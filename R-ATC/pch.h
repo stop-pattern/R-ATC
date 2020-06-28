@@ -11,5 +11,8 @@
 #include "framework.h"
 #include "ats.h"
 #include "Header.h"
+#include "Plugin.h"
+
+extern Plugin* atsPlugin;
 
 #endif //PCH_H
