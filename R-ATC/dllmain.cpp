@@ -19,7 +19,6 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		break;
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
-		delete atsPlugin;
 		break;
 	}
 	return TRUE;
@@ -31,7 +30,7 @@ DE void SC Load(void) {
 }
 
 DE void SC Dispose(void) {
-
+	delete atsPlugin;
 }
 
 DE int SC GetPluginVersion(void) {

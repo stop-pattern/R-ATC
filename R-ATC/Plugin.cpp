@@ -162,7 +162,7 @@ int Plugin::getPath(HMODULE hModule) {
 #endif // UNICODE
 
 	try {
-		GetModuleFileName(hModule, FilePath, MAX_PATH);	// ファイルパス取得
+		//GetModuleFileName(hModule, FilePath, MAX_PATH);	// ファイルパス取得
 	}
 	catch (const std::exception & e) {
 		return -1;	// エラー握りつぶす => 後で実装する
@@ -178,7 +178,7 @@ int Plugin::getPath(HMODULE hModule) {
 
 int Plugin::iniLoad() {
 	try {
-		readIni("app", "key", 0);	// Example
+		//readIni("app", "key", 0);	// Example
 	}
 	catch (const std::exception & e) {
 		return -1;	// エラー握りつぶす => 後で実装する
