@@ -61,6 +61,54 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	// R-ATC example:
 	atcR->Elapse(status);
 
+
+	// 下からn桁目の数値をuint8_tで返す (nが1以外で0の時は10)
+	auto getDigitF = [&](float arg, uint16_t n)noexcept -> uint8_t {
+		if (n == 0) return arg;
+		float ret = arg;
+		for (size_t i = 0; i < n - 1; i++) {
+			ret /= 10;
+		}
+		ret = static_cast<int>(ret) % 10;
+		if (n == 1)return ret;
+		if (ret == 0)return 10;
+		return ret;
+	};
+
+	float A = atsPlugin->getStatus().status.A;
+
+	// TIMS代替
+	p[21] = st.V < 0 ? 2 : st.V > 0 ? 1 : 0;
+	p[22] = getDigitF(st.V, 4);
+	p[23] = getDigitF(st.V, 3);
+	p[24] = getDigitF(st.V, 2);
+	p[25] = getDigitF(st.V, 1);
+	p[26] = getDigitF(st.V, 0);
+	p[30] = ret.B;
+	p[37] = st.T / 3600000;
+	p[38] = st.T / 60000;
+	p[39] = st.T / 1000;
+	p[41] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[42] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[43] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[44] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[45] = getDigitF(st.V, 3);	// 3
+	p[46] = getDigitF(st.V, 2);	// 2
+	p[47] = getDigitF(st.V, 1);	// 1
+	p[50] = getDigitF(st.V, 0);	// needle
+	p[100] = getDigitF(st.V, 3);
+	p[101] = getDigitF(st.V, 2);
+	p[102] = getDigitF(st.V, 1);
+	p[103] = 0;
+	p[104] = 0;
+	p[105] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[106] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[107] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[108] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[109] = A < 0 ? 2 : A > 0 ? 1 : 0;
+	p[122] = atsPlugin->getDoor() ? 0 : st.BC < 200 ? 1 : 0;
+	p[122] = atsPlugin->getDoor() ? 0 : st.BC < 200 ? 1 : 0;
+
 	return atsPlugin->Elapse(ret);
 }
 
