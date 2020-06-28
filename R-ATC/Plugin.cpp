@@ -152,9 +152,14 @@ int Plugin::getiniData(std::string app, std::string key) {
 // --- others --- //
 
 int Plugin::getPath(HMODULE hModule) {
-	LPSTR FilePath;	// = _T("");
+	LPTSTR FilePath;
+#ifdef UNICODE
+	WCHAR Y[] = L"";
+	FilePath = Y;
+#else
 	char buf[100];
 	FilePath = &buf[0];
+#endif // UNICODE
 
 	try {
 		GetModuleFileName(hModule, FilePath, MAX_PATH);	// ファイルパス取得
@@ -185,7 +190,13 @@ int Plugin::readIni(std::string app, std::string key, uint32_t def) {
 	int ret = 0;
 	try {
 		//GetPrivateProfileIntA("AppName", "KeyName", default, "FileName");
+#ifdef UNICODE
+		std::wstring appnW = std::to_wstring(0);	// todo: std::string app を std::wstring appnW に変換
+		std::wstring keynW = std::to_wstring(0);	// todo: std::string key を std::wstring keynW に変換
+		ret = GetPrivateProfileIntW(appnW.c_str(), keynW.c_str(), 0, this->iniPath.wstring().c_str());
+#else
 		ret = GetPrivateProfileInt(app.c_str(), key.c_str(), 0, this->iniPath.string().c_str());
+#endif // UNICODE
 		this->iniData[app][key] = ret;
 	}
 	catch (const std::exception & e) {
