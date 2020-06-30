@@ -61,20 +61,6 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	// R-ATC example:
 	atcR->Elapse(status);
 
-
-	// 下からn桁目の数値をuint8_tで返す (nが1以外で0の時は10)
-	auto getDigitF = [&](float arg, uint16_t n)noexcept -> uint8_t {
-		if (n == 0) return arg;
-		float ret = std::fabs(arg);;
-		for (size_t i = 0; i < n - 1; i++) {
-			ret /= 10;
-		}
-		ret = static_cast<int>(ret) % 10;
-		if (n == 1)return ret;
-		if (ret == 0)return 10;
-		return ret;
-	};
-
 	float A = atsPlugin->getStatus().status.A;
 	int8_t u = 0;
 	if (ret.B == 0) {

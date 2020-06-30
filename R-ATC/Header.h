@@ -34,3 +34,7 @@ struct VehicleState {
 	VehicleState();
 	VehicleState(State st, int* p, int* s);
 };
+
+// ‰º‚©‚çnŒ…–Ú‚Ì”’l‚ğuint8_t‚Å•Ô‚·
+// ¦n‚ª1ˆÈŠO‚Å0‚Ì‚ÍãˆÊŒ…‚ª10‚È‚ç10
+uint8_t getDigitF(float arg, uint16_t n)noexcept;

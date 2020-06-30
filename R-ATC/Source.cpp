@@ -106,3 +106,19 @@ VehicleState::VehicleState(State st, int* p, int* s) {
 		this->sound[i] = s[i];
 	}
 }
+
+// ‰º‚©‚çnŒ…–Ú‚Ì”’l‚ğuint8_t‚Å•Ô‚· (n‚ª1ˆÈŠO‚Å0‚Ì‚Í10)
+uint8_t getDigitF (float arg, uint16_t n)noexcept {
+	if (n == 0) return static_cast<uint8_t>(arg);
+	float ret = std::fabs(arg);;
+	for (size_t i = 0; i < n - 1; i++) {
+		ret /= 10;
+	}
+	ret = std::fmod(ret, 10);
+	if (n == 1)return static_cast<uint8_t>(ret);
+	if (ret == 0) {
+		if (getDigitF(arg, n + 1) == 10) return 10;
+		return ret;
+	}
+	return static_cast<uint8_t>(ret);
+};
