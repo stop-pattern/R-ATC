@@ -109,16 +109,19 @@ VehicleState::VehicleState(State st, int* p, int* s) {
 
 // 下からn桁目の数値をuint8_tで返す (nが1以外で0の時は10)
 uint8_t getDigitF (float arg, uint16_t n)noexcept {
-	if (n == 0) return static_cast<uint8_t>(arg);
-	float ret = std::fabs(arg);;
-	for (size_t i = 0; i < n - 1; i++) {
-		ret /= 10;
-	}
-	ret = std::fmod(ret, 10);
-	if (n == 1)return static_cast<uint8_t>(ret);
-	if (ret == 0) {
-		if (getDigitF(arg, n + 1) == 10) return 10;
-		return ret;
-	}
+	// n桁目を抜き出すラムダ式
+	auto gd = [](float arg, uint16_t n) -> uint8_t {
+		float ret = std::fabs(arg);
+		for (size_t i = 0; i < n - 1; i++) {
+			ret /= 10;
+		}
+		return static_cast<uint8_t>(std::fmod(ret, 10));
+	};
+
+	if (n == 0) return static_cast<uint8_t>(arg);	// n==0の時はそのまま
+	float ret = gd(arg, n);
+	if (n == 1)return static_cast<uint8_t>(ret);	// n==1の時は1桁目そのまま
+	if (ret != 0) return static_cast<uint8_t>(ret);	// ret!=0の時はそのまま
+	if (gd(arg, n + 1) == 0) return 10;	// ret==0の時は上の桁が0なら10
 	return static_cast<uint8_t>(ret);
 };
