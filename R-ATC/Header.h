@@ -6,6 +6,7 @@ struct SpecPlus : Spec {
 	SpecPlus& operator=(const Spec& next);
 	SpecPlus& operator=(const SpecPlus& next);
 	SpecPlus();
+	SpecPlus(const Spec &old);
 };
 
 // é‘óºèÛë‘ägí£

@@ -59,7 +59,8 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 		ret.B = atsPlugin->getSpec().E;
 	}
 	// R-ATC example:
-	atcR->Elapse(status);
+	Hand r = atcR->Elapse(status);
+	if (r.B > ret.B) ret.B = r.B;
 
 	float A = atsPlugin->getStatus().status.A;
 	int8_t u = 0;

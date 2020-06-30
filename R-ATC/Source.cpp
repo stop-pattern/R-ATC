@@ -19,6 +19,15 @@ SpecPlus::SpecPlus() {
 	int E = 0;	// 非常ブレーキ
 }
 
+SpecPlus::SpecPlus(const Spec& old) {
+	int B = old.B;	//ブレーキ段数
+	int P = old.P;	//ノッチ段数
+	int A = old.A;	//ATS確認段数
+	int J = old.J;	//常用最大段数
+	int C = old.C;	//編成車両数
+	int E = old.J + 1;	// 非常ブレーキ
+}
+
 SpecPlus& SpecPlus::operator=(const Spec& next) {
 	if (this == &next) {
 		this->E = next.B + 1;

@@ -49,7 +49,12 @@ int Plugin::Attach(HMODULE hModule) {
 // --- for bve API --- //
 
 void Plugin::SetVehicleSpec(Spec sp) {
-	this->spec = sp;
+	this->spec.A = sp.A;
+	this->spec.B = sp.B;
+	this->spec.C = sp.C;
+	this->spec.E = sp.J + 1;
+	this->spec.J = sp.J;
+	this->spec.P = sp.P;
 }
 
 void Plugin::Initialize(int i) {
