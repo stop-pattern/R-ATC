@@ -8,8 +8,10 @@
 #include <cstdlib>
 #include <unordered_map>
 #include <filesystem>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <array>
 //#include <pair>
 #include <map>
+#include <tchar.h>

@@ -108,20 +108,36 @@ VehicleState::VehicleState(State st, int* p, int* s) {
 }
 
 int ControlInfo::setControl(Hand* h, int* p, int* s) {
-	// ハンドル代入
-	if (this->Handle.count("B")) h->B = this->Handle.find("B")->second;
-	if (this->Handle.count("P")) h->P = this->Handle.find("P")->second;
-	if (this->Handle.count("R")) h->R = this->Handle.find("R")->second;
-	if (this->Handle.count("C")) h->C = this->Handle.find("C")->second;
+	try {
+		// ハンドル代入
+		if (this->Handle.count("B")) h->B = this->Handle.find("B")->second;
+		if (this->Handle.count("P")) h->P = this->Handle.find("P")->second;
+		if (this->Handle.count("R")) h->R = this->Handle.find("R")->second;
+		if (this->Handle.count("C")) h->C = this->Handle.find("C")->second;
+	}
+	catch (const std::exception& e) {
 
-	// パネル代入
-	for (auto iter = this->Panel.begin(); iter != this->Panel.end(); ++iter) {
-		p[iter->first] = iter->second;
 	}
 
-	// サウンド代入
-	for (auto iter = this->Sound.begin(); iter != this->Sound.end(); ++iter) {
-		s[iter->first] = iter->second;
+	try {
+		// パネル代入
+		for (auto iter = this->Panel.begin(); iter != this->Panel.end(); ++iter) {
+			p[iter->first] = iter->second;
+		}
+	}
+	catch (const std::out_of_range& e) {
+
+	}
+
+	try {
+		// サウンド代入
+		for (auto iter = this->Sound.begin(); iter != this->Sound.end(); ++iter) {
+			s[iter->first] = iter->second;
+		}
+	}
+	catch (const std::exception& e) {
+		std::wstring emsg = std::wstring(e.what());
+		DialogBoxW(NULL, emsg.c_str(), nullptr, 0);
 	}
 
 	return 0;
