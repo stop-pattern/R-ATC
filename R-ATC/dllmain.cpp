@@ -46,17 +46,21 @@ DE void SC Initialize(int) {
 
 DE Hand SC Elapse(State st, int* p, int* s) {
 	VehicleState status = VehicleState(st, s, p);
-	Hand manual = atsPlugin->Elapse(status);
-	Hand ret = manual;
+	ControlInfo control;
 
 	/* ----- todo: add optional code here ----- */
 	// example:
 	if (atsPlugin->getDoor()) {
-		ret.P = 0;
+		control.Handle["P"] = 0;
+		control.Panel[0] = false;
 	}
 	if (std::abs(atsPlugin->getStatus().status.A) >= 10) {
-		ret.B = atsPlugin->getSpec().E;
+		control.Handle["B"] = atsPlugin->getSpec().E;
+		control.Panel[0] = true;
 	}
+
+	Hand ret = atsPlugin->Elapse(status);
+	control.setControl(&ret, p, s);
 
 	return atsPlugin->Elapse(ret);
 }
