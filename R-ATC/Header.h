@@ -37,7 +37,8 @@ struct VehicleState {
 
 // 制御情報
 struct ControlInfo {
-	std::unordered_map<std::string, int8_t, std::less<>> Handle = { {} };	// ハンドル制御値
+	std::unordered_map<std::string, int8_t> Handle = { {} };	// ハンドル制御値
+	// std::unordered_map<std::string, int8_t, std::less<>>
 	std::unordered_map<uint8_t, uint32_t> Panel = { {} };	// パネル制御値
 	std::unordered_map<uint8_t, int32_t> Sound = { {} };	// サウンド制御値
 	int setControl(Hand* h, int* p, int* s);	// 状態伝達
