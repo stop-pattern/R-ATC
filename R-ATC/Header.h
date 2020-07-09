@@ -42,7 +42,6 @@ struct ControlInfo {
 	std::unordered_map<uint8_t, int32_t> Sound = { {} };	// サウンド制御値
 	int setControl(Hand* h, int* p, int* s);	// 状態伝達
 };
-};
 
 // 下からn桁目の数値をuint8_tで返す
 // ※nが1以外で0の時は上位桁が10なら10
