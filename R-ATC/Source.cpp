@@ -135,10 +135,10 @@ int ControlInfo::setControl(Hand* h, int* p, int* s) {
 			s[iter->first] = iter->second;
 		}
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception& e) {/*
 		std::wstring emsg = std::wstring(e.what());
 		DialogBoxW(NULL, emsg.c_str(), nullptr, 0);
-	}
+	*/}
 
 	return 0;
 }
