@@ -64,8 +64,8 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 
 	float A = atsPlugin->getStatus().status.A;
 	int8_t u = 0;
-	if (ret.B == 0) {
-		if (ret.P == 0) u = 0;
+	if (control.Handle["B"] == 0) {
+		if (control.Handle["P"] == 0) u = 0;
 		else u = 1;
 	} else u = 2;
 
@@ -76,7 +76,7 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	p[24] = getDigitF(st.V, 2);
 	p[25] = getDigitF(st.V, 1);
 	p[26] = std::fabs(st.V);
-	p[30] = ret.B;
+	p[30] = control.Handle["B"];
 	p[37] = st.T / 3600000;
 	p[38] = st.T / 60000;
 	p[39] = st.T / 1000;
