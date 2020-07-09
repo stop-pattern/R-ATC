@@ -35,6 +35,15 @@ struct VehicleState {
 	VehicleState(State st, int* p, int* s);
 };
 
+// 制御情報
+struct ControlInfo {
+	std::unordered_map<std::string, int8_t, std::less<>> Handle = { {} };	// ハンドル制御値
+	std::unordered_map<uint8_t, uint32_t> Panel = { {} };	// パネル制御値
+	std::unordered_map<uint8_t, int32_t> Sound = { {} };	// サウンド制御値
+	int setControl(Hand* h, int* p, int* s);	// 状態伝達
+};
+};
+
 // 下からn桁目の数値をuint8_tで返す
 // ※nが1以外で0の時は上位桁が10なら10
 uint8_t getDigitF(float arg, uint16_t n)noexcept;
