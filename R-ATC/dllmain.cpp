@@ -59,8 +59,12 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 		control.Handle["B"] = atsPlugin->getSpec().E;
 		control.Panel[0] = true;
 	}
+
 	// R-ATC example:
-	atcR->Elapse(status);
+	ControlInfo r = atcR->Elapse(status);
+	if (r.Handle["P"] >= control.Handle["P"]) {
+		control.Handle["P"] = r.Handle["P"];
+	}
 
 	float A = atsPlugin->getStatus().status.A;
 	int8_t u = 0;

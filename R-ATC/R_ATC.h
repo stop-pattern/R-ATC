@@ -50,7 +50,7 @@ public:
 	// control R-ATC at every frame
 	// arg : VehicleState state
 	//     vehicle status
-	// return : Hand
-	//     output handle position
-	Hand Elapse(VehicleState state);
+	// return : ControlInfo
+	//     output status
+	ControlInfo Elapse(VehicleState state);
 };

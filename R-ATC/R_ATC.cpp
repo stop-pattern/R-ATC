@@ -67,18 +67,18 @@ R_ATC::R_ATC() {
 R_ATC::~R_ATC() {
 }
 
-Hand R_ATC::Elapse(VehicleState state) {
-	Hand ret = Hand();
+ControlInfo R_ATC::Elapse(VehicleState state) {
+	ControlInfo ret = ControlInfo();
 
 	// “]“®–h~
 	if (atsPlugin->getDoor() && state.status.A) {
-		ret.B = atsPlugin->getSpec().E / 2;	//“]“®–h~“®ì
-		state.panel[static_cast<size_t>(panelIndex::Rolling)] = true;	// “]“®–h~“_“”
+		ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//“]“®–h~“®ì
+		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = true;	// “]“®–h~“_“”
 	} else if(atsPlugin->getHandleManual().B <= atsPlugin->getSpec().E / 2) {
-		state.panel[static_cast<size_t>(panelIndex::Rolling)] = false;	// “]“®–h~–Å“”
+		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = false;	// “]“®–h~–Å“”
 	}
 
-	ret.B = this->calclateBrake(state, 0/* §ŒÀ‘¬“x */);
+	ret.Handle["B"] = this->calclateBrake(state, 0/* §ŒÀ‘¬“x */);
 	
 	return ret;
 }
