@@ -101,24 +101,25 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 
 	// í‚é~å¿äE
 	const double stopLimit_d = this->stop;	// í‚é~å¿äEà íu
-	const double stopLimit = stopLimit_d - state.status.Z;	// í‚é~å¿äEécãóó£
-	uint16_t stopLimit_ui = this->calclateStopLimit(state);	// í‚é~å¿äE
+	double stopLimit = stopLimit_d - state.status.Z >= 0 ? stopLimit_d - state.status.Z : 0;	// í‚é~å¿äEécãóó£
+	uint16_t stopLimit_ui = 0;
+	if (stopLimit >= 0) stopLimit_ui = this->calclateStopLimit(state);	// í‚é~å¿äE
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = stopLimit_ui;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit)] = stopLimit;
-	uint32_t temp = static_cast<uint32_t>(stopLimit * 10) % 100;
-	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = temp == 0 ? 100 : temp;
-	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = static_cast<uint32_t>(stopLimit / 10) % 100;
-	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = static_cast<uint32_t>(stopLimit / 1000) % 1000;
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = static_cast<uint32_t>(stopLimit * 10) % 100 + 1;
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = static_cast<uint32_t>(stopLimit / 10) % 100 + 1;
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = static_cast<uint32_t>(stopLimit / 1000) % 1000 + 1;
 
 	// ì]ìÆñhé~
-	if (atsPlugin->getDoor() && state.status.A) {
+	if (atsPlugin->getDoor()) {
 		ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//ì]ìÆñhé~ìÆçÏ
-		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = true;	// ì]ìÆñhé~ì_ìî
+		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 1;	// ì]ìÆñhé~ì_ìî
 	} else if(atsPlugin->getHandleManual().B <= atsPlugin->getSpec().E / 2) {
-		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = false;	// ì]ìÆñhé~ñ≈ìî
+		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// ì]ìÆñhé~ñ≈ìî
 	}
 
-	ret.Handle["B"] = this->calclateBrake(state, this->calclateSpeed(state));
+	uint16_t brake = this->calclateBrake(state, this->calclateSpeed(state));
+	if (brake > ret.Handle["B"]) ret.Handle["B"] = brake;
 	
 	return ret;
 }
