@@ -49,16 +49,6 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	VehicleState status = VehicleState(st, s, p);
 	ControlInfo control;
 
-	/* ----- todo: add optional code here ----- */
-	// example:
-	if (atsPlugin->getDoor()) {
-		control.Handle["P"] = 0;
-		control.Panel[0] = false;
-	}
-	if (std::abs(atsPlugin->getStatus().status.A) >= 10) {
-		control.Handle["B"] = atsPlugin->getSpec().E;
-		control.Panel[0] = true;
-	}
 
 	// R-ATC example:
 	ControlInfo r = atcR->Elapse(status);
