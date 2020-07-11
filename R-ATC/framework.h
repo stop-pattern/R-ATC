@@ -6,7 +6,9 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <unordered_map>
 #include <filesystem>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <array>
