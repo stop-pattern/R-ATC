@@ -111,7 +111,7 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	p[128] = (st.MR - 750) / 5 > 10 ? (st.MR - 750) / 5 < 20 ? (st.MR - 750) / 20 - 10 : 10 : 10;
 	p[129] = (st.MR - 750) / 5 > 20 ? (st.MR - 750) / 5 < 30 ? (st.MR - 750) / 20 - 20 : 10 : 10;
 
-	Hand ret = atsPlugin->Elapse(status);
+	Hand ret = atsPlugin->getHandleManual();
 	control.setControl(&ret, p, s);
 
 	return atsPlugin->Elapse(ret);
