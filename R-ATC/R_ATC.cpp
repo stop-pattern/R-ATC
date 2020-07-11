@@ -100,12 +100,13 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	ControlInfo ret = ControlInfo();
 
 	// ’âŽ~ŒÀŠE
-	const double stopLimit_d = std::rand();
-	const double stopLimit = stopLimit_d - state.status.Z;
-	uint16_t stopLimit_ui = this->calclateStopLimit(state);
+	const double stopLimit_d = this->stop;	// ’âŽ~ŒÀŠEˆÊ’u
+	const double stopLimit = stopLimit_d - state.status.Z;	// ’âŽ~ŒÀŠEŽc‹——£
+	uint16_t stopLimit_ui = this->calclateStopLimit(state);	// ’âŽ~ŒÀŠE
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = stopLimit_ui;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit)] = stopLimit;
-	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = static_cast<uint32_t>(stopLimit * 10) % 100;
+	uint32_t temp = static_cast<uint32_t>(stopLimit * 10) % 100;
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = temp == 0 ? 100 : temp;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = static_cast<uint32_t>(stopLimit / 10) % 100;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = static_cast<uint32_t>(stopLimit / 1000) % 1000;
 
