@@ -30,6 +30,9 @@ private:
 
 	/* ----- variants ----- */
 	std::vector<uint16_t> limit;	// ë¨ìxêßå¿
+public:
+	double stop;	// í‚é~å¿äE
+private:
 	
 	/* ----- functions ----- */
 	// calclate speed limit

@@ -79,7 +79,8 @@ uint16_t R_ATC::calclateStopLimit(VehicleState state) {
 	const uint16_t unit = 100;	// 停止限界表示をいくつに区切るか[個]
 	const uint8_t dis = 10;	// 1区切り当たりの距離[m]
 	double limit;	// 停止限界距離
-	limit = dis * (unit - state.status.V);	// デバック
+	//limit = dis * (unit - state.status.V);	// デバック
+	limit = this->stop;	// デバック
 	for (size_t i = 0; i < unit; i++) {
 		if (limit < state.status.Z + dis * i) {
 			if (i == 0) return unit;
