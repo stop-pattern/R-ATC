@@ -109,6 +109,8 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = static_cast<uint32_t>(stopLimit * 10) % 100 + 1;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = static_cast<uint32_t>(stopLimit / 10) % 100 + 1;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = static_cast<uint32_t>(stopLimit / 1000) % 1000 + 1;
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Train)] = true;
 
 	// “]“®–hŽ~
 	if (atsPlugin->getDoor()) {
