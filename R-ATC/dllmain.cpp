@@ -148,6 +148,9 @@ DE void SC SetBeaconData(Beacon b) {
 	case 210:
 		atcR->stop = b.Z + atsPlugin->getStatus().status.Z;	// D-ATC互換機能
 		break;
+	case 000:
+		atcR->setCrossing(b.Data + atsPlugin->getStatus().status.Z);
+		break;
 	default:
 		break;
 	}

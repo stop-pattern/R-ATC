@@ -27,10 +27,23 @@ private:
 		Station_start = 239,	// ‰w‹æn“_
 		Station_end = 240,	// ‰w‹æI“_
 		Clossing_1 = 241,	// “¥Ø
+		Clossing_2 = 242,	// “¥Ø
+		Clossing_3 = 243,	// “¥Ø
+		Clossing_4 = 244,	// “¥Ø
+		Clossing_5 = 245,	// “¥Ø
+		Clossing_6 = 246,	// “¥Ø
+		Clossing_7 = 247,	// “¥Ø
+		Clossing_8 = 248,	// “¥Ø
+		Clossing_9 = 249,	// “¥Ø
+		Clossing_10 = 250,	// “¥Ø
 	};
 
 	/* ----- variants ----- */
+	const uint16_t unit = 100;	// ’â~ŒÀŠE•\¦‚ğ‚¢‚­‚Â‚É‹æØ‚é‚©[ŒÂ]
+	const uint8_t dis = 10;	// 1‹æØ‚è“–‚½‚è‚Ì‹——£[m]
+	bool sw;	// ATCó‘Ô
 	std::vector<uint16_t> limit;	// ‘¬“x§ŒÀ
+	std::vector<double> crossing;	// “¥Ø
 public:
 	double stop;	// ’â~ŒÀŠE
 private:
@@ -74,4 +87,11 @@ public:
 	// return : ControlInfo
 	//     output status
 	ControlInfo Elapse(VehicleState state);
+
+	// set crossing position
+	// arg : double distance
+	//     vehicle status
+	// return : double
+	//     arg
+	double setCrossing(double distance);
 };
