@@ -143,7 +143,9 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// “]“®–hŽ~–Å“”
 	}
 
-	ret.Handle["B"] = this->calclateBrake(state, 0/* §ŒÀ‘¬“x */);
+	// ƒuƒŒ[ƒLo—Í
+	uint16_t brake = this->calclateBrake(state, this->calclateSpeed(state));
+	if (brake > ret.Handle["B"]) ret.Handle["B"] = brake;
 	
 	return ret;
 }
