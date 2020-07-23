@@ -84,4 +84,18 @@ public:
 	// return : ControlInfo
 	//     output status
 	ControlInfo Elapse(VehicleState state);
+
+	// set crossing position
+	// arg : double distance
+	//     vehicle status
+	// return : double
+	//     arg
+	double setCrossing(double distance);
+
+	// set stop limit
+	// arg : double distance
+	//     distance of stop limit 
+	// return : double
+	//     arg
+	double setStop(double distance);
 };
