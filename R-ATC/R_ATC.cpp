@@ -1,15 +1,17 @@
 #include "pch.h"
 #include "R_ATC.h"
 
-uint16_t R_ATC::calclateSpeed(VehicleState state) {
+float R_ATC::calclateSpeed(VehicleState state) {
 	uint16_t ret = UINT16_MAX;
-	for (size_t i = 0; i < static_cast<size_t>(limitIndex::size); i++) {
-		if (ret <= this->limit[i]) ret = this->limit[i];
-	}
+	float dec = 18;	// 減速定数
+	float L = 225400;	// 停止限界距離程
+	if (state.status.Z > L) return 0;
+	ret = std::sqrt(std::abs(L - state.status.Z) * dec);
+	if (ret > 120) ret = 120;
 	return ret;
 }
 
-uint16_t R_ATC::calclateBrake(VehicleState state, uint16_t speed, uint8_t param) {
+uint16_t R_ATC::calclateBrake(VehicleState state, float speed, uint8_t param) {
 	uint16_t ret = 0;	// ブレーキ指令値
 	float psec = 2.5;	// P接近表示時間[s]
 
@@ -24,6 +26,8 @@ uint16_t R_ATC::calclateBrake(VehicleState state, uint16_t speed, uint8_t param)
 	if (state.status.V < speed) return 0;
 
 	// ATC設定
+	if (state.status.V > speed + 10) param = 2;
+	if (state.status.V == 0 && speed == 0) param = 1;
 
 	// ATC例外
 	switch (param) {
@@ -38,19 +42,23 @@ uint16_t R_ATC::calclateBrake(VehicleState state, uint16_t speed, uint8_t param)
 		break;
 	}
 
+	/*
 	// 10km/h以下の時の例外
 	if (state.status.V < 10) {	// もうちょっと考えてもいいかも
 		ret = atsPlugin->getHandleControl().B;	// 前回出力値
 		if(state.status.V < 0.25) if (state.status.A == 0) ret = atsPlugin->getSpec().J / 2;
-		else if (state.status.V < 1) if (ret > atsPlugin->getSpec().J / 2) ret = atsPlugin->getSpec().J / 2;
-		else if (state.status.V < 2.5) if (std::rand() % 4) ret--;
+		else if (state.status.V < 0.5) if (ret > atsPlugin->getSpec().J / 2) ret = atsPlugin->getSpec().J / 2;
+		else if (state.status.V < 1) if (std::rand() % 4) ret--;
 		else if (state.status.V < 5) if (std::rand() % 8) ret--;
-		else if (std::rand() % 16) ret--;
+		else if (std::rand() % 100) ret--;
+		if (ret < 0) ret = 0;
 	}
+	*/
+	if (state.status.V == 0) return atsPlugin->getSpec().J;
 
 	// P接触・P演算
-	double bl = 5.00 / (atsPlugin->getSpec().E / 2);	// ブレーキ計算値
-	// 制限+5km/hの時に非常/2の出力になるように各段のPを引く
+	double bl = 4.00 / (atsPlugin->getSpec().E / 2);	// ブレーキ計算値
+	// 制限+4km/hの時に非常/2の出力になるように各段のPを引く
 	for (size_t i = 0; i < atsPlugin->getSpec().E; i++) {
 		if (state.status.V - bl * i < speed) {
 			return static_cast<uint16_t>(i);

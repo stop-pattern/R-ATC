@@ -49,20 +49,20 @@ private:
 	// calclate speed limit
 	// arg : VehicleState state
 	//     vehicle status
-	// return : uint16_t
+	// return : float
 	//     output speed limit
-	uint16_t calclateSpeed(VehicleState state);
+	float calclateSpeed(VehicleState state);
 
 	// calclate brake notch
 	// arg : VehicleState state
 	//     vehicle status
-	// arg : uint16_t speed
+	// arg : float speed
 	//     limit speed
 	// arg : uint8_t param
 	//     ATC parameter
 	// return : uint16_t
 	//     output brake notch
-	uint16_t calclateBrake(VehicleState state, uint16_t speed, uint8_t param = 0);
+	uint16_t calclateBrake(VehicleState state, float speed, uint8_t param = 0);
 
 	// calclate stop limit
 	// arg : VehicleState state
