@@ -29,7 +29,10 @@ private:
 	};
 
 	/* ----- variants ----- */
+	const uint16_t unit = 100;	// ’â~ŒÀŠE•\¦‚ğ‚¢‚­‚Â‚É‹æØ‚é‚©[ŒÂ]
+	const uint8_t dis = 10;	// 1‹æØ‚è“–‚½‚è‚Ì‹——£[m]
 	std::vector<uint16_t> limit;	// ‘¬“x§ŒÀ
+	double stop = 0.0;	// ’â~ŒÀŠE
 	
 	/* ----- functions ----- */
 	// calclate speed limit
@@ -70,4 +73,11 @@ public:
 	// return : ControlInfo
 	//     output status
 	ControlInfo Elapse(VehicleState state);
+
+	// set stop limit
+	// arg : double distance
+	//     distance of stop limit 
+	// return : double
+	//     arg
+	double setStop(double distance);
 };

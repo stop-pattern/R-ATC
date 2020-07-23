@@ -154,5 +154,11 @@ DE void SC SetSignal(int s) {
 }
 
 DE void SC SetBeaconData(Beacon b) {
-
+	switch (b.Num) {
+	case 210:
+		atcR->setStop(b.Z + atsPlugin->getStatus().status.Z);	// D-ATC互換機能
+		break;
+	default:
+		break;
+	}
 }
