@@ -43,6 +43,7 @@ private:
 	const uint8_t dis = 10;	// 1‹æØ‚è“–‚½‚è‚Ì‹——£[m]
 	std::vector<uint16_t> limit;	// ‘¬“x§ŒÀ
 	std::vector<double> crossing;	// “¥Ø
+	double stop = 0.0;	// ’â~ŒÀŠE
 	
 	/* ----- functions ----- */
 	// calclate speed limit
@@ -83,11 +84,4 @@ public:
 	// return : ControlInfo
 	//     output status
 	ControlInfo Elapse(VehicleState state);
-
-	// set crossing position
-	// arg : double distance
-	//     vehicle status
-	// return : double
-	//     arg
-	double setCrossing(double distance);
 };
