@@ -94,6 +94,21 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = static_cast<uint32_t>(stopLimit / 10) % 100;
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = static_cast<uint32_t>(stopLimit / 1000) % 1000;
 
+	// “¥Ø
+	uint8_t index = static_cast<uint8_t>(R_ATC::panelIndex::Clossing_1);
+	for (size_t i = static_cast<size_t>(R_ATC::panelIndex::Clossing_1); i <= static_cast<size_t>(R_ATC::panelIndex::Clossing_10); i++) {
+		ret.Panel[i] = 0;
+	}
+	for (size_t i = 0; i < this->crossing.size(); i++) {
+		if (crossing[i] < state.status.Z) continue;
+		if (index >= static_cast<uint8_t>(R_ATC::panelIndex::Clossing_10) + 1) break;
+		if (crossing[i] < state.status.Z + 1000) {
+			ret.Panel[index] = static_cast<uint32_t>((crossing[i] - state.status.Z) / this->dis);
+			index++;
+		}
+		else if (crossing[i] > state.status.Z + 1000) break;
+	}
+
 	// “]“®–h~
 	if (atsPlugin->getDoor() && state.status.A) {
 		ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//“]“®–h~“®ì
@@ -105,6 +120,12 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	ret.Handle["B"] = this->calclateBrake(state, 0/* §ŒÀ‘¬“x */);
 	
 	return ret;
+}
+
+double R_ATC::setCrossing(double distance) {
+	this->crossing.push_back(distance);	// —v‘f’Ç‰Á
+	std::sort(this->crossing.begin(), this->crossing.end());	// ¸‡ƒ\[ƒg
+	return distance;
 }
 
 // ƒpƒ^[ƒ“ˆø‚«•û

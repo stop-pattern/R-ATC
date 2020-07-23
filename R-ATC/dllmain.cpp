@@ -154,5 +154,11 @@ DE void SC SetSignal(int s) {
 }
 
 DE void SC SetBeaconData(Beacon b) {
-
+	switch (b.Num) {
+	case 000:
+		atcR->setCrossing(b.Data + atsPlugin->getStatus().status.Z);
+		break;
+	default:
+		break;
+	}
 }

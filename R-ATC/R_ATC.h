@@ -26,10 +26,22 @@ private:
 		Station_start = 239,	// 駅区始点
 		Station_end = 240,	// 駅区終点
 		Clossing_1 = 241,	// 踏切
+		Clossing_2 = 242,	// 踏切
+		Clossing_3 = 243,	// 踏切
+		Clossing_4 = 244,	// 踏切
+		Clossing_5 = 245,	// 踏切
+		Clossing_6 = 246,	// 踏切
+		Clossing_7 = 247,	// 踏切
+		Clossing_8 = 248,	// 踏切
+		Clossing_9 = 249,	// 踏切
+		Clossing_10 = 250,	// 踏切
 	};
 
 	/* ----- variants ----- */
+	const uint16_t unit = 100;	// 停止限界表示をいくつに区切るか[個]
+	const uint8_t dis = 10;	// 1区切り当たりの距離[m]
 	std::vector<uint16_t> limit;	// 速度制限
+	std::vector<double> crossing;	// 踏切
 	
 	/* ----- functions ----- */
 	// calclate speed limit
@@ -70,4 +82,11 @@ public:
 	// return : ControlInfo
 	//     output status
 	ControlInfo Elapse(VehicleState state);
+
+	// set crossing position
+	// arg : double distance
+	//     vehicle status
+	// return : double
+	//     arg
+	double setCrossing(double distance);
 };
