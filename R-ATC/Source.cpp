@@ -110,8 +110,16 @@ VehicleState::VehicleState(State st, int* p, int* s) {
 int ControlInfo::setControl(Hand* h, int* p, int* s) {
 	try {
 		// ƒnƒ“ƒhƒ‹‘ã“ü
-		if (this->Handle.count("B")) h->B = this->Handle.find("B")->second;
-		if (this->Handle.count("P")) h->P = this->Handle.find("P")->second;
+		if (this->Handle.count("B")) {
+			if (h->B < this->Handle.find("B")->second) {
+				h->B = this->Handle.find("B")->second;
+			}
+		}
+		if (this->Handle.count("P")) {
+			if (h->P < this->Handle.find("P")->second) {
+				h->P = this->Handle.find("P")->second;
+			}
+		}
 		if (this->Handle.count("R")) h->R = this->Handle.find("R")->second;
 		if (this->Handle.count("C")) h->C = this->Handle.find("C")->second;
 	}
