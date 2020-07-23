@@ -47,23 +47,13 @@ DE void SC Initialize(int) {
 
 DE Hand SC Elapse(State st, int* p, int* s) {
 	VehicleState status = VehicleState(st, s, p);
-	ControlInfo control;
+	ControlInfo control = atcR->Elapse(status);
 
-	/* ----- todo: add optional code here ----- */
-	// example:
-	if (atsPlugin->getDoor()) {
-		control.Handle["P"] = 0;
-		control.Panel[0] = false;
+	if (control.Handle["P"] < atsPlugin->getHandleManual().P) {
+		control.Handle["P"] = atsPlugin->getHandleManual().P;
 	}
-	if (std::abs(atsPlugin->getStatus().status.A) >= 10) {
-		control.Handle["B"] = atsPlugin->getSpec().E;
-		control.Panel[0] = true;
-	}
-
-	// R-ATC example:
-	ControlInfo r = atcR->Elapse(status);
-	if (r.Handle["P"] >= control.Handle["P"]) {
-		control.Handle["P"] = r.Handle["P"];
+	if (control.Handle["B"] < atsPlugin->getHandleManual().B) {
+		control.Handle["B"] = atsPlugin->getHandleManual().B;
 	}
 
 	float A = atsPlugin->getStatus().status.A;

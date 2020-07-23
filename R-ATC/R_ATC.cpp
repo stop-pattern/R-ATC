@@ -84,6 +84,9 @@ R_ATC::~R_ATC() {
 ControlInfo R_ATC::Elapse(VehicleState state) {
 	ControlInfo ret = ControlInfo();
 
+	// ATCìdåπ
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
+
 	// í‚é~å¿äE
 	const double stopLimit_d = std::rand();
 	const double stopLimit = stopLimit_d - state.status.Z;
