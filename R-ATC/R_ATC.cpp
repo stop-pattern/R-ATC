@@ -114,6 +114,11 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit)] = temp;
 	}
 
+	// ŠJ’Êî•ñ
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Train)] = true;
+	uint16_t stopLimit_ui = 0;
+	if (stopLimit >= 0) stopLimit_ui = this->calclateStopLimit(state);	// ’â~ŒÀŠE
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = stopLimit_ui;
 
 	// “¥Ø
 	uint8_t index = static_cast<uint8_t>(R_ATC::panelIndex::Clossing_1);
