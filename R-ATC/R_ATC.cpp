@@ -136,11 +136,11 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	}
 
 	// “]“®–h~
-	if (atsPlugin->getDoor() && state.status.A) {
+	if (atsPlugin->getDoor()) {
 		ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//“]“®–h~“®ì
-		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = true;	// “]“®–h~“_“”
+		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 1;	// “]“®–h~“_“”
 	} else if(atsPlugin->getHandleManual().B <= atsPlugin->getSpec().E / 2) {
-		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = false;	// “]“®–h~–Å“”
+		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// “]“®–h~–Å“”
 	}
 
 	ret.Handle["B"] = this->calclateBrake(state, 0/* §ŒÀ‘¬“x */);
