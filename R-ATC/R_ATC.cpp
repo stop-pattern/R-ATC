@@ -80,6 +80,9 @@ R_ATC::~R_ATC() {
 ControlInfo R_ATC::Elapse(VehicleState state) {
 	ControlInfo ret = ControlInfo();
 
+	// ATC“dŒ¹
+	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
+
 	// ’âŽ~ŒÀŠE
 	const double stopLimit_d = this->stop;	// ’âŽ~ŒÀŠEˆÊ’u
 	double stopLimit = stopLimit_d - state.status.Z >= 0 ? stopLimit_d - state.status.Z : 0;	// ’âŽ~ŒÀŠEŽc‹——£

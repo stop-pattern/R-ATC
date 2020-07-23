@@ -12,6 +12,7 @@ private:
 
 	// panelのインデックス
 	enum struct panelIndex : uint8_t {
+		Power = 52,	// ATC電源
 		Rolling = 65,	// 転動防止
 		Limit_5 = 66,	// 速度矢印5k
 		Limit_1 = 67,	// 速度矢印1k
