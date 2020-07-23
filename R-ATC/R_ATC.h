@@ -30,6 +30,7 @@ private:
 
 	/* ----- variants ----- */
 	std::vector<uint16_t> limit;	// ‘¬“x§ŒÀ
+	std::vector<std::pair<double, std::chrono::milliseconds>> preTrain;	// æs—ñÔ
 	
 	/* ----- functions ----- */
 	// calclate speed limit

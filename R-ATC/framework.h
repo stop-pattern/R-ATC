@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <chrono>
 #include <array>
 #include <cmath>
 #include <map>

@@ -76,6 +76,31 @@ uint16_t R_ATC::calclateStopLimit(VehicleState state) {
 }
 
 R_ATC::R_ATC() {
+	std::chrono::milliseconds temp = std::chrono::milliseconds(0);
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(53) + std::chrono::seconds(45);
+	preTrain.push_back(std::make_pair(16625, temp));
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(53) + std::chrono::seconds(52);
+	preTrain.push_back(std::make_pair(16935, temp));
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(54) + std::chrono::seconds(26);
+	preTrain.push_back(std::make_pair(17775, temp));
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(54) + std::chrono::seconds(55);
+	preTrain.push_back(std::make_pair(18455, temp));
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(56) + std::chrono::seconds(23);
+	preTrain.push_back(std::make_pair(18905, temp));
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(56) + std::chrono::seconds(37);
+	preTrain.push_back(std::make_pair(19230, temp));
+
+	temp = std::chrono::hours(8) + std::chrono::minutes(57) + std::chrono::seconds(27);
+	preTrain.push_back(std::make_pair(20425, temp));
+
+	temp = std::chrono::hours(9) + std::chrono::minutes(2) + std::chrono::seconds(20);
+	preTrain.push_back(std::make_pair(20901, temp));
 }
 
 R_ATC::~R_ATC() {
