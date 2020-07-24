@@ -12,6 +12,7 @@ private:
 
 	// panel‚ÌƒCƒ“ƒfƒbƒNƒX
 	enum struct panelIndex : uint8_t {
+		Power = 52,	// ATC“dŒ¹
 		Rolling = 65,	// “]“®–h~
 		Limit_5 = 66,	// ‘¬“x–îˆó5k
 		Limit_1 = 67,	// ‘¬“x–îˆó1k
@@ -26,30 +27,43 @@ private:
 		Station_start = 239,	// ‰w‹æn“_
 		Station_end = 240,	// ‰w‹æI“_
 		Clossing_1 = 241,	// “¥Ø
+		Clossing_2 = 242,	// “¥Ø
+		Clossing_3 = 243,	// “¥Ø
+		Clossing_4 = 244,	// “¥Ø
+		Clossing_5 = 245,	// “¥Ø
+		Clossing_6 = 246,	// “¥Ø
+		Clossing_7 = 247,	// “¥Ø
+		Clossing_8 = 248,	// “¥Ø
+		Clossing_9 = 249,	// “¥Ø
+		Clossing_10 = 250,	// “¥Ø
 	};
 
 	/* ----- variants ----- */
+	const uint16_t unit = 100;	// ’â~ŒÀŠE•\¦‚ğ‚¢‚­‚Â‚É‹æØ‚é‚©[ŒÂ]
+	const uint8_t dis = 10;	// 1‹æØ‚è“–‚½‚è‚Ì‹——£[m]
 	std::vector<uint16_t> limit;	// ‘¬“x§ŒÀ
+	std::vector<double> crossing;	// “¥Ø
+	double stop = 0.0;	// ’â~ŒÀŠE
 	std::vector<std::pair<std::chrono::milliseconds, double>> preTrain;	// æs—ñÔ
 	
 	/* ----- functions ----- */
 	// calclate speed limit
 	// arg : VehicleState state
 	//     vehicle status
-	// return : uint16_t
+	// return : float
 	//     output speed limit
-	uint16_t calclateSpeed(VehicleState state);
+	float calclateSpeed(VehicleState state);
 
 	// calclate brake notch
 	// arg : VehicleState state
 	//     vehicle status
-	// arg : uint16_t speed
+	// arg : float speed
 	//     limit speed
 	// arg : uint8_t param
 	//     ATC parameter
 	// return : uint16_t
 	//     output brake notch
-	uint16_t calclateBrake(VehicleState state, uint16_t speed, uint8_t param = 0);
+	uint16_t calclateBrake(VehicleState state, float speed, uint8_t param = 0);
 
 	// calclate stop limit
 	// arg : VehicleState state
@@ -78,4 +92,18 @@ public:
 	// return : ControlInfo
 	//     output status
 	ControlInfo Elapse(VehicleState state);
+
+	// set crossing position
+	// arg : double distance
+	//     vehicle status
+	// return : double
+	//     arg
+	double setCrossing(double distance);
+
+	// set stop limit
+	// arg : double distance
+	//     distance of stop limit 
+	// return : double
+	//     arg
+	double setStop(double distance);
 };
