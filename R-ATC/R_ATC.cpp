@@ -94,6 +94,7 @@ double R_ATC::getPreTrainPosition(VehicleState state) {
 		if (std::chrono::milliseconds(state.status.T) < this->preTrain[i].first) {
 			double a = (preTrain[i + 1].second - preTrain[i].second) / (preTrain[i + 1].first.count() - preTrain[i].first.count());
 			ret = a * (state.status.T - preTrain[i].first.count()) + preTrain[i].second;	// 線形回帰
+			// y = \frac{y_{1}-y_{0}}{x_{1}-x_{0}} (x-x_{0}) + y_{0}
 			return ret;
 		}
 	}
@@ -127,7 +128,7 @@ R_ATC::R_ATC() {
 	temp = std::chrono::hours(9) + std::chrono::minutes(2) + std::chrono::seconds(20);
 	preTrain.push_back(std::make_pair(temp, 20901));
 
-
+	std::sort(preTrain.begin(), preTrain.end());	// 昇順ソート
 }
 
 R_ATC::~R_ATC() {
