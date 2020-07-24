@@ -30,7 +30,7 @@ private:
 
 	/* ----- variants ----- */
 	std::vector<uint16_t> limit;	// ‘¬“x§ŒÀ
-	std::vector<std::pair<double, std::chrono::milliseconds>> preTrain;	// æs—ñÔ
+	std::vector<std::pair<std::chrono::milliseconds, double>> preTrain;	// æs—ñÔ
 	
 	/* ----- functions ----- */
 	// calclate speed limit
@@ -57,6 +57,13 @@ private:
 	// return : uint16_t
 	//     stop limit index
 	uint16_t calclateStopLimit(VehicleState state);
+
+	// get PreTrain position
+	// arg : VehicleState state
+	//     vehicle status
+	// return : double
+	//     PreTrain position
+	double getPreTrainPosition(VehicleState state);
 
 public:
 	// constructor

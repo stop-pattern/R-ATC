@@ -64,8 +64,7 @@ uint16_t R_ATC::calclateBrake(VehicleState state, uint16_t speed, uint8_t param)
 uint16_t R_ATC::calclateStopLimit(VehicleState state) {
 	const uint16_t unit = 100;	// ’â~ŒÀŠE•\¦‚ğ‚¢‚­‚Â‚É‹æØ‚é‚©[ŒÂ]
 	const uint8_t dis = 10;	// 1‹æØ‚è“–‚½‚è‚Ì‹——£[m]
-	double limit;	// ’â~ŒÀŠE‹——£
-	limit = dis * (unit - state.status.V);	// ƒfƒoƒbƒN
+	double limit = this->getPreTrainPosition(state);	// ’â~ŒÀŠE‹——£
 	for (size_t i = 0; i < unit; i++) {
 		if (limit < state.status.Z + dis * i) {
 			if (i == 0) return unit;
@@ -75,32 +74,53 @@ uint16_t R_ATC::calclateStopLimit(VehicleState state) {
 	return 0;
 }
 
+double R_ATC::getPreTrainPosition(VehicleState state) {
+	double ret = 0.0;
+	if (this->preTrain.size() <= 1) {
+		if (this->preTrain.size() == 0) return ret;
+		return this->preTrain[0].second;
+	}
+	if (this->preTrain[this->preTrain.size() - 1].first < std::chrono::milliseconds(state.status.T)) {
+		return this->preTrain[this->preTrain.size() - 1].second;
+	}
+	for (size_t i = 0; i < this->preTrain.size(); i++) {
+		if (std::chrono::milliseconds(state.status.T) < this->preTrain[i].first) {
+			double a = (preTrain[i + 1].second - preTrain[i].second) / (preTrain[i + 1].first.count() - preTrain[i].first.count());
+			ret = a * (state.status.T - preTrain[i].first.count()) + preTrain[i].second;	// üŒ`‰ñ‹A
+			return ret;
+		}
+	}
+	return ret;
+}
+
 R_ATC::R_ATC() {
 	std::chrono::milliseconds temp = std::chrono::milliseconds(0);
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(53) + std::chrono::seconds(45);
-	preTrain.push_back(std::make_pair(16625, temp));
+	preTrain.push_back(std::make_pair(temp, 16625));
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(53) + std::chrono::seconds(52);
-	preTrain.push_back(std::make_pair(16935, temp));
+	preTrain.push_back(std::make_pair(temp, 16935));
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(54) + std::chrono::seconds(26);
-	preTrain.push_back(std::make_pair(17775, temp));
+	preTrain.push_back(std::make_pair(temp, 17775));
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(54) + std::chrono::seconds(55);
-	preTrain.push_back(std::make_pair(18455, temp));
+	preTrain.push_back(std::make_pair(temp, 18455));
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(56) + std::chrono::seconds(23);
-	preTrain.push_back(std::make_pair(18905, temp));
+	preTrain.push_back(std::make_pair(temp, 18905));
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(56) + std::chrono::seconds(37);
-	preTrain.push_back(std::make_pair(19230, temp));
+	preTrain.push_back(std::make_pair(temp, 19230));
 
 	temp = std::chrono::hours(8) + std::chrono::minutes(57) + std::chrono::seconds(27);
-	preTrain.push_back(std::make_pair(20425, temp));
+	preTrain.push_back(std::make_pair(temp, 20425));
 
 	temp = std::chrono::hours(9) + std::chrono::minutes(2) + std::chrono::seconds(20);
-	preTrain.push_back(std::make_pair(20901, temp));
+	preTrain.push_back(std::make_pair(temp, 20901));
+
+
 }
 
 R_ATC::~R_ATC() {
