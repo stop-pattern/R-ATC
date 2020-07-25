@@ -69,11 +69,10 @@ uint16_t R_ATC::calclateBrake(VehicleState state, float speed, uint8_t param) {
 	return ret;	// g‚í‚È‚¢‚¯‚Ç•ÛŒ¯
 }
 
-uint16_t R_ATC::calclateStopLimit(VehicleState state) {
-	double limit = this->stop;	// ’â~ŒÀŠE‹——£
-	if (this->getPreTrainPosition(state) < limit) limit = this->getPreTrainPosition(state);
+uint16_t R_ATC::calclateStopLimit(VehicleState state, double limit) {
+	if (limit < 0) return this->unit + 1;
 	for (size_t i = 0; i < this->unit; i++) {
-		if (limit < state.status.Z + this->dis * i) {
+		if (limit < this->dis * i) {
 			if (i == 0) return this->unit + 1;
 			return i;
 		}
@@ -91,7 +90,9 @@ double R_ATC::getPreTrainPosition(VehicleState state) {
 		return this->preTrain[this->preTrain.size() - 1].second;
 	}
 	for (size_t i = 0; i < this->preTrain.size(); i++) {
+		if (i == this->preTrain.size() - 1) return this->preTrain[this->preTrain.size() - 1].second;
 		if (std::chrono::milliseconds(state.status.T) < this->preTrain[i].first) {
+			if (i == 0) return this->preTrain[i].second;
 			double a = (preTrain[i + 1].second - preTrain[i].second) / (preTrain[i + 1].first.count() - preTrain[i].first.count());
 			ret = a * (state.status.T - preTrain[i].first.count()) + preTrain[i].second;	// üŒ`‰ñ‹A
 			// y = \frac{y_{1}-y_{0}}{x_{1}-x_{0}} (x-x_{0}) + y_{0}
@@ -141,8 +142,8 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
 
 	// ’â~ŒÀŠE
-	const double stopLimit_d = this->stop;	// ’â~ŒÀŠEˆÊ’u
-	double stopLimit = stopLimit_d - state.status.Z >= 0 ? stopLimit_d - state.status.Z : 0;	// ’â~ŒÀŠEc‹——£
+	const double stopLimit_d = this->stop < getPreTrainPosition(state) ? this->stop : getPreTrainPosition(state);	// ’â~ŒÀŠEˆÊ’u
+	const double stopLimit = stopLimit_d - state.status.Z >= 0 ? stopLimit_d - state.status.Z : 0;	// ’â~ŒÀŠEc‹——£
 	{
 		uint32_t temp = static_cast<uint32_t>(stopLimit / 1000) % 100;
 		if (stopLimit / 100000 >= 1) {	// ÅãˆÊŒ…‚Ìê‡
@@ -174,7 +175,7 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 	// ŠJ’Êî•ñ
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Train)] = true;
 	uint16_t stopLimit_ui = 0;
-	if (stopLimit >= 0) stopLimit_ui = this->calclateStopLimit(state);	// ’â~ŒÀŠE
+	if (stopLimit >= 0) stopLimit_ui = this->calclateStopLimit(state, stopLimit);	// ’â~ŒÀŠE
 	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = stopLimit_ui;
 
 	// “¥Ø

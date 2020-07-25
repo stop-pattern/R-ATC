@@ -68,9 +68,11 @@ private:
 	// calclate stop limit
 	// arg : VehicleState state
 	//     vehicle status
+	// arg : double limit
+	//     overrun limit
 	// return : uint16_t
 	//     stop limit index
-	uint16_t calclateStopLimit(VehicleState state);
+	uint16_t calclateStopLimit(VehicleState state, double limit);
 
 	// get PreTrain position
 	// arg : VehicleState state
