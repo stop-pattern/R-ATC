@@ -3,7 +3,7 @@
 
 
 SpecPlus& SpecPlus::operator=(const SpecPlus& next) {
-	if (this == &next) {
+	if (this != &next) {
 		this->E = next.B + 1;
 		Spec::operator=(next);
 	}
@@ -20,7 +20,7 @@ SpecPlus::SpecPlus() {
 }
 
 SpecPlus& SpecPlus::operator=(const Spec& next) {
-	if (this == &next) {
+	if (this != &next) {
 		this->E = next.B + 1;
 		Spec::operator=(next);
 	}
