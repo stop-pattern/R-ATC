@@ -38,6 +38,12 @@ private:
 		Clossing_10 = 250,	// 踏切
 	};
 
+	// soundのインデックス
+	enum struct soundIndex : uint8_t {
+		ATC = 50, // ATCベル
+
+	};
+
 	/* ----- variants ----- */
 	const uint16_t unit = 100;	// 停止限界表示をいくつに区切るか[個]
 	const uint8_t dis = 10;	// 1区切り当たりの距離[m]

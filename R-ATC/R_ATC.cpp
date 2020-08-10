@@ -88,76 +88,102 @@ R_ATC::~R_ATC() {
 ControlInfo R_ATC::Elapse(VehicleState state) {
 	ControlInfo ret = ControlInfo();
 
-	// ATCìdåπ
-	ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
+	// êMçÜ
+	if (atsPlugin->getSignal() >= 50 && atsPlugin->getSignal() <= 60) {
 
-	// 250[ms]åoâﬂÇ≈çXêV
-	const double stopLimit_d = this->stop;	// í‚é~å¿äEà íu
-	double stopLimit = stopLimit_d - state.status.Z >= 0 ? stopLimit_d - state.status.Z : 0;	// í‚é~å¿äEécãóó£
-	if ((atsPlugin->getStatus().status.T / 250 > atsPlugin->getStatusPrevious().status.T / 250)) {
+		if (atsPlugin->getStatus().panel[static_cast<size_t>(panelIndex::Power)] == false) {
+			ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayOnce;
+		}
+		else ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayContinue;
 
-	// í‚é~å¿äE
-		uint32_t temp = static_cast<uint32_t>(stopLimit / 1000) % 100;
-		if (stopLimit / 100000 >= 1) {	// ç≈è„à åÖÇÃèÍçá
-			if (true) {	// 1åÖÉÇÅ[Éh
-				if (temp == 0) temp = 10;
+		// ATCìdåπ
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
+
+		// 250[ms]åoâﬂÇ≈çXêV
+		const double stopLimit_d = this->stop;	// í‚é~å¿äEà íu
+		double stopLimit = stopLimit_d - state.status.Z >= 0 ? stopLimit_d - state.status.Z : 0;	// í‚é~å¿äEécãóó£
+		if ((atsPlugin->getStatus().status.T / 250 > atsPlugin->getStatusPrevious().status.T / 250)) {
+
+			// í‚é~å¿äE
+			uint32_t temp = static_cast<uint32_t>(stopLimit / 1000) % 100;
+			if (stopLimit / 100000 >= 1) {	// ç≈è„à åÖÇÃèÍçá
+				if (true) {	// 1åÖÉÇÅ[Éh
+					if (temp == 0) temp = 10;
+				}
+				else if (temp < 10) temp += 100;	// 2åÖÉÇÅ[Éh
 			}
-			else if (temp < 10) temp += 100;	// 2åÖÉÇÅ[Éh
+			ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = temp;
+
+			if (temp == 0) {	// ç≈è„à åÖÇÃèÍçá
+				temp = static_cast<uint32_t>(stopLimit / 10) % 100;
+				//if (temp == 0) temp = 100;
+			}
+			else {	// íÜà åÖÇÃèÍçá
+				temp = static_cast<uint32_t>(stopLimit / 10) % 100;
+				if (temp < 10) temp += 100;
+				if (temp == 100) temp += 10;
+			}
+			ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = temp;
+
+			temp = static_cast<uint32_t>(stopLimit * 10) % 100;
+			ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = temp == 0 ? 100 : temp;
+
+			temp = stopLimit;
+			ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit)] = temp;
+
+			// äJí èÓïÒ
+			ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Train)] = true;
+			uint16_t stopLimit_ui = 0;
+			if (stopLimit >= 0) stopLimit_ui = this->calclateStopLimit(state);	// í‚é~å¿äE
+			ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = stopLimit_ui;
+
+			// ì•êÿ
+			uint8_t index = static_cast<uint8_t>(R_ATC::panelIndex::Clossing_1);
+			for (size_t i = static_cast<size_t>(R_ATC::panelIndex::Clossing_1); i <= static_cast<size_t>(R_ATC::panelIndex::Clossing_10); i++) {
+				ret.Panel[i] = 0;
+			}
+			for (size_t i = 0; i < this->crossing.size(); i++) {
+				if (crossing[i] < state.status.Z) continue;
+				if (index >= static_cast<uint8_t>(R_ATC::panelIndex::Clossing_10) + 1) break;
+				if (crossing[i] < state.status.Z + 1000) {
+					ret.Panel[index] = static_cast<uint32_t>((crossing[i] - state.status.Z) / this->dis);
+					index++;
+				}
+				else if (crossing[i] > state.status.Z + 1000) break;
+			}
+
 		}
-		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = temp;
 
-		if (temp == 0) {	// ç≈è„à åÖÇÃèÍçá
-			temp = static_cast<uint32_t>(stopLimit / 10) % 100;
-			//if (temp == 0) temp = 100;
+		// ì]ìÆñhé~
+		if (atsPlugin->getDoor()) {
+			ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//ì]ìÆñhé~ìÆçÏ
+			ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 1;	// ì]ìÆñhé~ì_ìî
+		} else if (atsPlugin->getHandleManual().B <= atsPlugin->getSpec().E / 2) {
+			if (std::rand() % 2) ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// ì]ìÆñhé~ñ≈ìî
 		}
-		else {	// íÜà åÖÇÃèÍçá
-			temp = static_cast<uint32_t>(stopLimit / 10) % 100;
-			if (temp < 10) temp += 100;
-			if (temp == 100) temp += 10;
+
+		// ÉuÉåÅ[ÉLèoóÕ
+		uint16_t brake = this->calclateBrake(state, this->calclateSpeed(state));
+		if (brake > ret.Handle["B"]) ret.Handle["B"] = brake;
+
+	}
+	else {	// ìdåπêÿ
+		if (atsPlugin->getStatus().panel[static_cast<size_t>(panelIndex::Power)] == true) {
+			ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayOnce;
+			ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = false;
 		}
-		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = temp;
-
-		temp = static_cast<uint32_t>(stopLimit * 10) % 100;
-		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = temp == 0 ? 100 : temp;
-
-		temp = stopLimit;
-		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit)] = temp;
-
-	// äJí èÓïÒ
-		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Train)] = true;
-		uint16_t stopLimit_ui = 0;
-		if (stopLimit >= 0) stopLimit_ui = this->calclateStopLimit(state);	// í‚é~å¿äE
-		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = stopLimit_ui;
-
-	// ì•êÿ
-		uint8_t index = static_cast<uint8_t>(R_ATC::panelIndex::Clossing_1);
+		else ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayContinue;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Train)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Close)] = false;
 		for (size_t i = static_cast<size_t>(R_ATC::panelIndex::Clossing_1); i <= static_cast<size_t>(R_ATC::panelIndex::Clossing_10); i++) {
-			ret.Panel[i] = 0;
+			ret.Panel[i] = false;
 		}
-		for (size_t i = 0; i < this->crossing.size(); i++) {
-			if (crossing[i] < state.status.Z) continue;
-			if (index >= static_cast<uint8_t>(R_ATC::panelIndex::Clossing_10) + 1) break;
-			if (crossing[i] < state.status.Z + 1000) {
-				ret.Panel[index] = static_cast<uint32_t>((crossing[i] - state.status.Z) / this->dis);
-				index++;
-			}
-			else if (crossing[i] > state.status.Z + 1000) break;
-		}
-
 	}
-
-	// ì]ìÆñhé~
-	if (atsPlugin->getDoor()) {
-		ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//ì]ìÆñhé~ìÆçÏ
-		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 1;	// ì]ìÆñhé~ì_ìî
-	} else if(atsPlugin->getHandleManual().B <= atsPlugin->getSpec().E / 2) {
-		if (std::rand() % 2) ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// ì]ìÆñhé~ñ≈ìî
-
-	}
-
-	// ÉuÉåÅ[ÉLèoóÕ
-	uint16_t brake = this->calclateBrake(state, this->calclateSpeed(state));
-	if (brake > ret.Handle["B"]) ret.Handle["B"] = brake;
 
 	return ret;
 }
