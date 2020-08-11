@@ -4,26 +4,42 @@
 float R_ATC::calclateSpeed(VehicleState state) {
 	uint16_t ret = UINT16_MAX;
 	float dec = 18;	// 減速定数
-	float L = 225400;	// 停止限界距離程
+	float L = this->stop;	// 停止限界距離程
 	if (state.status.Z > L) return 0;
 	ret = std::sqrt(std::abs(L - state.status.Z) * dec);
 	if (ret > 120) ret = 120;
 	return ret;
 }
 
-uint16_t R_ATC::calclateBrake(VehicleState state, float speed, uint8_t param) {
-	uint16_t ret = 0;	// ブレーキ指令値
+ControlInfo R_ATC::calclateBrake(VehicleState state, float speed, uint8_t param) {
+	ControlInfo ret = ControlInfo();	// ブレーキ指令値
 	float psec = 2.5;	// P接近表示時間[s]
+
+	// ATC表示リセット
+	if (atsPlugin->getStatusPrevious().panel[static_cast<uint32_t>(panelIndex::ATC_02)] == true) ret.Panel[static_cast<uint32_t>(panelIndex::ATC_02)] = false;
+	if (atsPlugin->getStatusPrevious().panel[static_cast<uint32_t>(panelIndex::ATC_01)] != 0) ret.Panel[static_cast<uint32_t>(panelIndex::ATC_01)] = false;
+	if (atsPlugin->getStatusPrevious().sound[static_cast<size_t>(soundIndex::ATC)] == SoundInfo::PlayOnce) ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayContinue;
+
+	// 制限
+	ret.Panel[static_cast<size_t>(panelIndex::Limit_1)] = static_cast<uint32_t>(speed);
+	ret.Panel[static_cast<size_t>(panelIndex::Limit_5)] = static_cast<uint32_t>((speed + 5) / 5) * 5;
 
 	// P接近
 	if (state.status.V + state.status.A * psec < speed) {
-		state.panel[static_cast<size_t>(panelIndex::Pattern)] = false;
-		return 0;
+		ret.Panel[static_cast<size_t>(panelIndex::Pattern)] = false;
+		ret.Handle["B"] = 0;
+		return ret;
 	}
-	state.panel[static_cast<size_t>(panelIndex::Pattern)] = true;
+	if (atsPlugin->getStatusPrevious().panel[static_cast<size_t>(panelIndex::Pattern)] == SoundInfo::PlayContinue) {
+		ret.Sound[static_cast<size_t>(panelIndex::Pattern)] = SoundInfo::PlayOnce;
+	}
+	ret.Panel[static_cast<size_t>(panelIndex::Pattern)] = true;
 
 	// P非接触
-	if (state.status.V < speed) return 0;
+	if (state.status.V < speed) {
+		ret.Handle["B"] = 0;
+		return ret;
+	}
 
 	// ATC設定
 	if (state.status.V > speed + 10) param = 2;
@@ -35,10 +51,17 @@ uint16_t R_ATC::calclateBrake(VehicleState state, float speed, uint8_t param) {
 	case 0:
 		break;
 	case 1:	// ATC常用
-		return atsPlugin->getSpec().J;
+		ret.Handle["B"] = atsPlugin->getSpec().J;
+		ret.Panel[static_cast<uint32_t>(panelIndex::ATC_01)] = 1;
+		if (atsPlugin->getStatusPrevious().sound[static_cast<size_t>(soundIndex::ATC)] == SoundInfo::PlayContinue) ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayOnce;
+		return ret;
 		break;
 	case 2:	// ATC非常
-		return atsPlugin->getSpec().E;
+		ret.Handle["B"] = atsPlugin->getSpec().E;
+		ret.Panel[static_cast<uint32_t>(panelIndex::ATC_01)] = 1;
+		ret.Panel[static_cast<uint32_t>(panelIndex::ATC_02)] = true;
+		if (atsPlugin->getStatusPrevious().sound[static_cast<size_t>(soundIndex::ATC)] == SoundInfo::PlayContinue) ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayOnce;
+		return ret;
 		break;
 	}
 
@@ -54,16 +77,20 @@ uint16_t R_ATC::calclateBrake(VehicleState state, float speed, uint8_t param) {
 		if (ret < 0) ret = 0;
 	}
 	*/
-	if (state.status.V == 0) return atsPlugin->getSpec().J;
+	if (state.status.V == 0) {
+		ret.Handle["B"] = atsPlugin->getSpec().J;
+		return ret;
+	}
 
 	// P接触・P演算
 	double bl = 4.00 / (atsPlugin->getSpec().E / 2);	// ブレーキ計算値
 	// 制限+4km/hの時に非常/2の出力になるように各段のPを引く
 	for (size_t i = 0; i < atsPlugin->getSpec().E; i++) {
 		if (state.status.V - bl * i < speed) {
-			return static_cast<uint16_t>(i);
+			ret.Handle["B"] = static_cast<uint16_t>(i);
+			return ret;
 		}
-		ret++;
+		ret.Handle["B"]++;
 	}
 
 	return ret;	// 使わないけど保険
@@ -86,10 +113,11 @@ R_ATC::~R_ATC() {
 }
 
 ControlInfo R_ATC::Elapse(VehicleState state) {
-	ControlInfo ret = ControlInfo();
+	ControlInfo ret = this->calclateBrake(state, this->calclateSpeed(state));
 
 	// 信号
-	if (atsPlugin->getSignal() >= 50 && atsPlugin->getSignal() <= 60) {
+	//if (atsPlugin->getSignal() >= 50 && atsPlugin->getSignal() <= 60) {
+	if (atsPlugin->getSignal() >= 200 && atsPlugin->getSignal() <= 219) {
 
 		if (atsPlugin->getStatus().panel[static_cast<size_t>(panelIndex::Power)] == false) {
 			ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayOnce;
@@ -98,6 +126,11 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 
 		// ATC電源
 		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = true;
+
+		// ブレーキ出力
+		if (ret.Handle["B"] < atsPlugin->getHandleManual().B) {
+			ret.Handle.erase(ret.Handle.find("B"));
+		}
 
 		// 250[ms]経過で更新
 		const double stopLimit_d = this->stop;	// 停止限界位置
@@ -162,18 +195,22 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 			if (std::rand() % 2) ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// 転動防止滅灯
 		}
 
-		// ブレーキ出力
-		uint16_t brake = this->calclateBrake(state, this->calclateSpeed(state));
-		if (brake > ret.Handle["B"]) ret.Handle["B"] = brake;
-
 	}
 	else {	// 電源切
+		ret.Handle.erase(ret.Handle.find("B"));
+
 		if (atsPlugin->getStatus().panel[static_cast<size_t>(panelIndex::Power)] == true) {
 			ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayOnce;
 			ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = false;
 		}
 		else ret.Sound[static_cast<size_t>(soundIndex::ATC)] = SoundInfo::PlayContinue;
+
 		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Power)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Limit_1)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Limit_5)] = false;
+		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::Pattern)] = false;
+		ret.Panel[static_cast<uint32_t>(panelIndex::ATC_02)] = false;
+		ret.Panel[static_cast<uint32_t>(panelIndex::ATC_01)] = 2;
 		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit1000)] = false;
 		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit10)] = false;
 		ret.Panel[static_cast<uint8_t>(R_ATC::panelIndex::StopLimit01)] = false;

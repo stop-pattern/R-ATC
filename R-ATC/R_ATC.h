@@ -17,6 +17,8 @@ private:
 		Limit_5 = 66,	// ‘¬“x–îˆó5k
 		Limit_1 = 67,	// ‘¬“x–îˆó1k
 		Pattern = 68,	// PÚ‹ß
+		ATC_02 = 70,	// 02
+		ATC_01 = 71,	// 01
 		StopLimit1000 = 76,	// ’â~ŒÀŠE10000-1000
 		StopLimit10 = 77,	// ’â~ŒÀŠE100-10
 		StopLimit01 = 78,	// ’â~ŒÀŠE1-0.1
@@ -66,9 +68,9 @@ private:
 	//     limit speed
 	// arg : uint8_t param
 	//     ATC parameter
-	// return : uint16_t
-	//     output brake notch
-	uint16_t calclateBrake(VehicleState state, float speed, uint8_t param = 0);
+	// return : ControlInfo
+	//     output status
+	ControlInfo calclateBrake(VehicleState state, float speed, uint8_t param = 0);
 
 	// calclate stop limit
 	// arg : VehicleState state
