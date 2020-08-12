@@ -49,17 +49,17 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	VehicleState status = VehicleState(st, s, p);
 	ControlInfo control = atcR->Elapse(status);
 
-	if (control.Handle["P"] < atsPlugin->getHandleManual().P) {
-		control.Handle["P"] = atsPlugin->getHandleManual().P;
+	if (control.Handle[static_cast<uint8_t>(handleIndex::P)] < atsPlugin->getHandleManual().P) {
+		control.Handle[static_cast<uint8_t>(handleIndex::P)] = atsPlugin->getHandleManual().P;
 	}
-	if (control.Handle["B"] < atsPlugin->getHandleManual().B) {
-		control.Handle["B"] = atsPlugin->getHandleManual().B;
+	if (control.Handle[static_cast<uint8_t>(handleIndex::B)] < atsPlugin->getHandleManual().B) {
+		control.Handle[static_cast<uint8_t>(handleIndex::B)] = atsPlugin->getHandleManual().B;
 	}
 
 	float A = atsPlugin->getStatus().status.A;
 	int8_t u = 0;
-	if (control.Handle["B"] == 0) {
-		if (control.Handle["P"] == 0) u = 0;
+	if (control.Handle[static_cast<uint8_t>(handleIndex::B)] == 0) {
+		if (control.Handle[static_cast<uint8_t>(handleIndex::P)] == 0) u = 0;
 		else u = 1;
 	} else u = 2;
 
@@ -70,7 +70,7 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	p[24] = getDigitF(st.V, 2);
 	p[25] = getDigitF(st.V, 1);
 	p[26] = std::fabs(st.V);
-	p[30] = control.Handle["B"];
+	p[30] = control.Handle[static_cast<uint8_t>(handleIndex::B)];
 	p[37] = st.T / 3600000;
 	p[38] = st.T / 60000;
 	p[39] = st.T / 1000;

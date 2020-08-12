@@ -148,7 +148,7 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 
 	// “]“®–h~
 	if (atsPlugin->getDoor()) {
-		ret.Handle["B"] = atsPlugin->getSpec().E / 2;	//“]“®–h~“®ì
+		ret.Handle[static_cast<uint8_t>(handleIndex::B)] = atsPlugin->getSpec().E / 2;	//“]“®–h~“®ì
 		ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 1;	// “]“®–h~“_“”
 	} else if(atsPlugin->getHandleManual().B <= atsPlugin->getSpec().E / 2) {
 		if (std::rand() % 2) ret.Panel[static_cast<size_t>(panelIndex::Rolling)] = 0;	// “]“®–h~–Å“”
@@ -157,7 +157,7 @@ ControlInfo R_ATC::Elapse(VehicleState state) {
 
 	// ƒuƒŒ[ƒLo—Í
 	uint16_t brake = this->calclateBrake(state, this->calclateSpeed(state));
-	if (brake > ret.Handle["B"]) ret.Handle["B"] = brake;
+	if (brake > ret.Handle[static_cast<uint8_t>(handleIndex::B)]) ret.Handle[static_cast<uint8_t>(handleIndex::B)] = brake;
 
 	return ret;
 }
