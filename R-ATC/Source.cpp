@@ -3,7 +3,7 @@
 
 
 SpecPlus& SpecPlus::operator=(const SpecPlus& next) {
-	if (this == &next) {
+	if (this != &next) {
 		this->E = next.B + 1;
 		Spec::operator=(next);
 	}
@@ -20,7 +20,7 @@ SpecPlus::SpecPlus() {
 }
 
 SpecPlus& SpecPlus::operator=(const Spec& next) {
-	if (this == &next) {
+	if (this != &next) {
 		this->E = next.B + 1;
 		Spec::operator=(next);
 	}
@@ -135,10 +135,10 @@ int ControlInfo::setControl(Hand* h, int* p, int* s) {
 			s[iter->first] = iter->second;
 		}
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception& e) {/*
 		std::wstring emsg = std::wstring(e.what());
 		DialogBoxW(NULL, emsg.c_str(), nullptr, 0);
-	}
+	*/}
 
 	return 0;
 }
