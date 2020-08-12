@@ -51,11 +51,11 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 	/* ----- todo: add optional code here ----- */
 	// example:
 	if (atsPlugin->getDoor()) {
-		control.Handle["P"] = 0;
+		control.Handle[static_cast<uint8_t>(handleIndex::P)] = 0;
 		control.Panel[0] = false;
 	}
 	if (std::abs(atsPlugin->getStatus().status.A) >= 10) {
-		control.Handle["B"] = atsPlugin->getSpec().E;
+		control.Handle[static_cast<uint8_t>(handleIndex::B)] = atsPlugin->getSpec().E;
 		control.Panel[0] = true;
 	}
 
