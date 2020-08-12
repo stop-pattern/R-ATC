@@ -96,13 +96,13 @@ VehicleState::VehicleState() {
 VehicleState::VehicleState(State st, int* p, int* s) {
 	this->status = st;
 
-	if (p == nullptr || s == nullptr) {
-		this->panel = {};
-		this->sound = {};
-		return;
-	}
+	if (p == nullptr) this->panel = {};
 	else for (size_t i = 0; i < 256; i++) {
 		this->panel[i] = p[i];
+	}
+
+	if(s == nullptr) this->sound = {};
+	else for (size_t i = 0; i < 256; i++) {
 		this->sound[i] = s[i];
 	}
 }
