@@ -46,7 +46,7 @@ DE void SC Initialize(int) {
 
 DE Hand SC Elapse(State st, int* p, int* s) {
 	VehicleState status = VehicleState(st, s, p);
-	ControlInfo control;
+	ControlInfo control = atsPlugin->beginElapse(st, p, s);
 
 	/* ----- todo: add optional code here ----- */
 	// example:
@@ -59,10 +59,7 @@ DE Hand SC Elapse(State st, int* p, int* s) {
 		control.Panel[0] = true;
 	}
 
-	Hand ret = atsPlugin->Elapse(status);
-	control.setControl(&ret, p, s);
-
-	return atsPlugin->Elapse(ret);
+	return atsPlugin->endElapse(control, p, s);
 }
 
 DE void SC SetPower(int p) {

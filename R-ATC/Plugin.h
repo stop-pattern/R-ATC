@@ -19,8 +19,8 @@ private:
 	int32_t initPos;	// 初期ブレーキ位置
 
 	SpecPlus spec;	// 車両性能
-	VehicleState status_now;	// 車両状態値 (今フレーム)
-	VehicleState status_previous;	// 車両状態値 (前フレーム)
+	VehicleState status_now;	// 車両状態値 (今フレーム入力)
+	VehicleState status_previous;	// 車両状態値 (前フレーム出力)
 	Hand handle_manual;	// 手動ハンドル状態
 	Hand handle_control;	// ハンドル制御値 (前フレーム出力)
 	std::array<bool, 16> key;	// 入力キー状態
@@ -59,32 +59,29 @@ public:
 	//     initialize position
 	void Initialize(int i);
 
-	// save status in latest frame
-	// called in Elapse(State, int*, int*)
-	// arg : VehicleState st 
-	//     vehicle status
-	// return : Hand
-	//     latest manually set handle position
-	Hand Elapse(VehicleState st);
-
-	// save status in latest frame
-	// called in Elapse(State, int*, int*)
+	// save status in this frame
+	// called at start of Elapse(State, int*, int*)
 	// arg : State st 
 	//     vehicle status
 	// arg : int* p
 	//     panel status
 	// arg : int* s
 	//     sound status
-	// return : Hand
+	// return : ControlInfo
 	//     latest manually set handle position
-	Hand Elapse(State st, int* p, int* s);
+	ControlInfo beginElapse(State st, int* p, int* s);
 
 	// save handle position in latest frame
-	// called in Elapse(State, int*, int*)
-	// arg : Hand h
+	// called at last of Elapse(State, int*, int*)
+	// arg : ControlInfo control
+	//     
+	// arg : int* p
+	//     panel status
+	// arg : int* s
+	//     sound status
 	// return : Hand
 	//     latest manually set handle position
-	Hand Elapse(Hand h);
+	Hand endElapse(ControlInfo control, int* p, int* s);
 
 	// save manual handle position
 	// called in SetPower(int)

@@ -56,19 +56,26 @@ void Plugin::Initialize(int i) {
 	this->initPos = i;
 }
 
-Hand Plugin::Elapse(VehicleState st) {
-	this->status_previous = this->status_now;
-	this->status_now = st;
-	return this->handle_manual;
+ControlInfo Plugin::beginElapse(State st, int* p, int* s) {
+	this->status_now = VehicleState(st, p, s);
+	ControlInfo ret = ControlInfo();
+	return ret;
 }
 
-Hand Plugin::Elapse(State st, int* p, int* s) {
-	return this->Elapse(VehicleState(st, p, s));
-}
+Hand Plugin::endElapse(ControlInfo control, int* p, int* s) {
 
-Hand Plugin::Elapse(Hand h) {
-	this->handle_control = h;
-	return this->handle_control;
+	// ’lÝ’è
+	Hand ret = this->handle_manual;
+	int stat = control.setControl(&ret, p, s);
+	if (stat);
+
+	// ó‘ÔXV
+	this->status_previous = VehicleState(this->status_now.status, p, s);
+	this->handle_control = ret;
+
+	p[30] = ret.B;
+
+	return ret;
 }
 
 void Plugin::SetPower(int p) {
