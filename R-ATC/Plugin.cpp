@@ -56,9 +56,9 @@ void Plugin::Initialize(int i) {
 	this->initPos = i;
 }
 
-ControlInfo Plugin::beginElapse(State st, int* p, int* s) {
+VehicleState Plugin::beginElapse(State st, int* p, int* s) {
 	this->status_now = VehicleState(st, p, s);
-	ControlInfo ret = ControlInfo();
+	VehicleState ret = VehicleState();
 	return ret;
 }
 

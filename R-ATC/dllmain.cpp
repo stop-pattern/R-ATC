@@ -46,7 +46,7 @@ DE void SC Initialize(int) {
 }
 
 DE Hand SC Elapse(State st, int* p, int* s) {
-	VehicleState status = VehicleState(st, s, p);
+	VehicleState status = atsPlugin->beginElapse(st, s, p);
 	ControlInfo control = atcR->Elapse(status);
 
 	if (control.Handle[static_cast<uint8_t>(handleIndex::P)] < atsPlugin->getHandleManual().P) {
