@@ -67,20 +67,20 @@ public:
 	//     panel status
 	// arg : int* s
 	//     sound status
-	// return : ControlInfo
-	//     latest manually set handle position
-	ControlInfo beginElapse(State st, int* p, int* s);
+	// return : VehicleState
+	//     vehicle state of this frame
+	VehicleState beginElapse(State st, int* p, int* s);
 
 	// save handle position in latest frame
 	// called at last of Elapse(State, int*, int*)
 	// arg : ControlInfo control
-	//     
+	//     vehicle control information
 	// arg : int* p
 	//     panel status
 	// arg : int* s
 	//     sound status
 	// return : Hand
-	//     latest manually set handle position
+	//     latest handle position
 	Hand endElapse(ControlInfo control, int* p, int* s);
 
 	// save manual handle position

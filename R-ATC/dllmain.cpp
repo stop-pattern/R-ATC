@@ -45,8 +45,8 @@ DE void SC Initialize(int) {
 }
 
 DE Hand SC Elapse(State st, int* p, int* s) {
-	VehicleState status = VehicleState(st, s, p);
-	ControlInfo control = atsPlugin->beginElapse(st, p, s);
+	VehicleState status = atsPlugin->beginElapse(st, s, p);
+	ControlInfo control = ControlInfo();
 
 	/* ----- todo: add optional code here ----- */
 	// example:
